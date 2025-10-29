@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ADX</title>
+    <title>मिनिमलिस्टिक मास्टर डॅशबोर्ड</title>
     <style>
         /* ========================================================= */
         /* 1. CORE VARIABLES & THEME SETUP */
@@ -11,12 +11,12 @@
         
         :root {
             /* DARK THEME DEFAULTS */
-            --color-bg-start: #0f172a;
-            --color-bg-end: #1e293b;
-            --color-accent-soft: #84cc16; 
-            --color-text-primary: #f8fafc;
-            --color-text-secondary: #94a3b8;
-            --liquid-tint: rgba(255, 255, 255, 0.08); 
+            --color-bg-start: #0f172a;      /* Deep Navy Blue */
+            --color-bg-end: #1e293b;        /* Dark Slate */
+            --color-accent-soft: #84cc16;   /* Subtle Lime Green */
+            --color-text-primary: #f8fafc;  /* Bright White */
+            --color-text-secondary: #94a3b8;/* Muted Gray */
+            --liquid-tint: rgba(255, 255, 255, 0.08); /* Frosted Glass Tint */
             --liquid-border: 1px solid rgba(255, 255, 255, 0.2);
             --liquid-blur: 20px;
             --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
@@ -27,12 +27,12 @@
 
         /* LIGHT THEME (Activated via JS by adding .light-mode to body) */
         body.light-mode {
-            --color-bg-start: #f1f5f9;      /* Light Gray */
-            --color-bg-end: #e2e8f0;        /* Lighter Gray */
+            --color-bg-start: #f1f5f9;      
+            --color-bg-end: #e2e8f0;        
             --color-accent-soft: #3b82f6;   /* Soft Blue */
-            --color-text-primary: #1e293b;  /* Dark Text */
-            --color-text-secondary: #64748b;/* Muted Text */
-            --liquid-tint: rgba(255, 255, 255, 0.6); /* Frosted White */
+            --color-text-primary: #1e293b;  
+            --color-text-secondary: #64748b;
+            --liquid-tint: rgba(255, 255, 255, 0.6); 
             --liquid-border: 1px solid rgba(0, 0, 0, 0.1);
             --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
             --inner-shadow: inset 0 0 5px rgba(255, 255, 255, 0.5);
@@ -55,6 +55,10 @@
             perspective: 1px;
             transform-style: preserve-3d;
             transition: all var(--transition-speed); 
+        }
+        /* Reduced motion support */
+        @media (prefers-reduced-motion: reduce) {
+            * { transition: none !important; animation: none !important; }
         }
 
         /* Full page element so scroll works */
@@ -111,13 +115,14 @@
             z-index: 1;
         }
 
+        /* Fallback for non-supporting browsers */
         @supports not (backdrop-filter: blur(var(--liquid-blur))) {
             .liquid-glass {
                 background-color: rgba(30, 41, 59, 0.9);
             }
         }
         
-        /* CSS Ripple Effect (on fullscreen button) */
+        /* CSS Ripple Effect (on link button) */
         .ripple-btn {
             position: relative;
             overflow: hidden;
@@ -144,23 +149,21 @@
         }
         
         /* ========================================================= */
-        /* 3. THUMBNAIL & CARD LAYOUT (UPDATED FOR SINGLE COLUMN) */
+        /* 3. CARD LAYOUT (SINGLE COLUMN) */
         /* ========================================================= */
         
-        /* UPDATED GRID FOR SINGLE COLUMN */
         .iframe-grid { 
             display: grid; 
             grid-template-columns: 1fr; /* ALWAYS one column */
             gap: 40px; 
             padding-bottom: 60px; 
-            max-width: 900px; /* Max width for central focus */
+            max-width: 900px; 
             width: 100%;
         }
 
-        /* UPDATED CARD HEIGHT */
         .iframe-panel { 
             min-height: 450px; 
-            padding: 25px; /* Slightly more padding */
+            padding: 25px; 
             display: flex; 
             flex-direction: column; 
             cursor: pointer; 
@@ -169,14 +172,13 @@
             transition: all var(--transition-speed); 
         }
         
-        /* UPDATED THUMBNAIL HEIGHT */
         .project-thumbnail-container {
             flex-grow: 1;
             position: relative;
             width: 100%;
             height: 30vh; 
             min-height: 250px;
-            max-height: 400px; /* Slightly increased max height for better visibility */
+            max-height: 400px; 
             border-radius: 12px;
             overflow: hidden;
             box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
@@ -227,7 +229,7 @@
         .iframe-grid.dim-active .iframe-panel:not(:hover):not(:focus-within) { opacity: 0.4; transform: scale(0.98); box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); }
         .iframe-grid .iframe-panel { transition: all 0.3s ease-in-out; }
         
-        /* General Layout & Components - Kept from previous version */
+        /* General Layout & Components */
         .main-container { width: 100%; max-width: 1400px; padding: 20px; margin: 0 auto; }
         .navbar { width: 100%; padding: 20px 30px; display: flex; justify-content: space-between; align-items: center; background: transparent; z-index: 10; }
         .logo { font-size: 1.2rem; font-weight: 600; color: var(--color-text-primary); }
@@ -245,18 +247,15 @@
         .project-title { font-size: 1.3rem; color: var(--color-accent-soft); padding-bottom: 10px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); transition: transform var(--transition-speed), color 0.3s; transform-origin: left; margin-bottom: 15px; }
         .iframe-panel:hover .project-title { transform: translateZ(20px) rotateY(-3deg); color: var(--color-text-primary); }
         .view-control { display: flex; justify-content: flex-end; margin-bottom: 5px; }
-        .fullscreen-btn { background-color: var(--color-accent-soft); color: var(--color-bg-end); border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: 600; transition: background-color 0.3s, transform 0.2s; font-size: 0.9rem; }
-        .fullscreen-btn:hover { background-color: #a3e635; transform: scale(1.05); }
-        #fullscreen-iframe { width: 100%; height: 100%; border: none; }
-        .close-btn { position: absolute; top: 20px; right: 20px; background: var(--color-accent-soft); color: var(--color-bg-end); border: none; border-radius: 50%; width: 40px; height: 40px; font-size: 1.5rem; cursor: pointer; line-height: 1; z-index: 1000; box-shadow: 0 0 10px rgba(132, 204, 22, 0.5); transition: transform 0.2s; }
-        .close-btn:hover { transform: rotate(90deg) scale(1.1); }
+        .view-link { 
+            background-color: var(--color-accent-soft); color: var(--color-bg-end); border: none; padding: 8px 15px; border-radius: 8px; 
+            cursor: pointer; font-weight: 600; transition: background-color 0.3s, transform 0.2s; font-size: 0.9rem;
+            text-decoration: none; display: inline-block;
+        }
+        .view-link:hover { background-color: #a3e635; transform: scale(1.05); }
+
         .footer { width: 100%; text-align: center; padding: 30px 0; border-top: 1px solid rgba(255, 255, 255, 0.1); margin-top: auto; }
-        @media (max-width: 600px) { .headline { font-size: 2rem; } .close-btn { top: 10px; right: 10px; width: 30px; height: 30px; font-size: 1.2rem; } }
-        #fullscreen-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(0, 0, 0, 0.95); z-index: 999; display: none; flex-direction: column; padding: 0; justify-content: center; align-items: center; }
-        .loader-spinner { border: 4px solid rgba(255, 255, 255, 0.1); border-top: 4px solid var(--color-accent-soft); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom: 20px; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        #fullscreen-iframe { opacity: 0; transition: opacity 0.5s; }
-        #fullscreen-overlay.loaded #fullscreen-iframe { opacity: 1; }
+        @media (max-width: 600px) { .headline { font-size: 2rem; } }
         
     </style>
 </head>
@@ -272,7 +271,7 @@
         <div class="bubble"></div>
     </div>
     
-    <!-- 3. MAIN DASHBOARD CONTENT (Directly loaded) -->
+    <!-- 3. MAIN DASHBOARD CONTENT -->
     <div id="dashboard-content">
         <div class="main-container">
             <!-- Minimal Top Navbar with System Status -->
@@ -294,21 +293,22 @@
                 <p class="subheadline">SDDA</p>
             </div>
 
-            <!-- Iframe Grid -->
+            <!-- Iframe Grid (Single Column) -->
             <main class="iframe-grid" id="iframe-grid">
                 
-                <!-- 1. प्रोजेक्ट फ्रेम -->
+                <!-- 1. प्रोजेक्ट फ्रेम (SAME-WINDOW NAVIGATION) -->
                 <div class="iframe-panel liquid-glass" tabindex="0">
                     <h2 class="project-title">सुमनमाला</h2>
                     <div class="view-control">
-                        <button class="fullscreen-btn ripple-btn" 
-                                data-url="https://rohanborsa6600-tech.github.io/Sumanmala1/#section-14"
-                                onclick="openFullscreen(this)">पूर्ण दृश्य पाहा</button>
+                        <!-- TARGET REMOVED: Opens in the same window -->
+                        <a class="view-link ripple-btn" 
+                                href="https://rohanborsa6600-tech.github.io/Sumanmala1/#section-14"
+                                onclick="playClickSound()">पूर्ण दृश्य पाहा</a>
                     </div>
                     
                     <!-- THUMBNAIL PREVIEW -->
                     <div class="project-thumbnail-container">
-                        <img src="https://placehold.co/800x600/1e293b/a3e635?text=Project+1+Preview" class="project-thumbnail" alt="Project 1 Preview">
+                        <img src="https://placehold.co/800x400/1e293b/a3e635?text=Project+1+Preview+(Adx)" class="project-thumbnail" alt="Project 1 Preview">
                         <div class="thumbnail-overlay">VIEW LIVE DEMO</div>
                     </div>
                 </div>
@@ -317,46 +317,46 @@
                 <div class="iframe-panel liquid-glass" tabindex="0">
                     <h2 class="project-title">सूत्रपाठ</h2>
                     <div class="view-control">
-                        <button class="fullscreen-btn ripple-btn" 
-                                data-url="https://rohanborsa6600-tech.github.io/Sutrapath-/#auto-section-23"
-                                onclick="openFullscreen(this)">पूर्ण दृश्य पाहा</button>
+                        <a class="view-link ripple-btn" 
+                                href="https://rohanborsa6600-tech.github.io/Sutrapath-/#auto-section-23"
+                                onclick="playClickSound()">पूर्ण दृश्य पाहा</a>
                     </div>
                     
                     <!-- THUMBNAIL PREVIEW -->
                     <div class="project-thumbnail-container">
-                        <img src="https://placehold.co/800x600/0f172a/7efcff?text=Project+2+Preview" class="project-thumbnail" alt="Project 2 Preview">
+                        <img src="https://placehold.co/800x400/0f172a/7efcff?text=Project+2+Preview" class="project-thumbnail" alt="Project 2 Preview">
                         <div class="thumbnail-overlay">VIEW LIVE DEMO</div>
                     </div>
                 </div>
 
                 <!-- 3. प्रोजेक्ट फ्रेम -->
                 <div class="iframe-panel liquid-glass" tabindex="0">
-                    <h2 class="project-title">गीता पाठ</h2>
+                    <h2 class="project-title">गीतापाठ</h2>
                     <div class="view-control">
-                        <button class="fullscreen-btn ripple-btn" 
-                                data-url="https://rohanborsa6600-tech.github.io/Geeta-/index.html"
-                                onclick="openFullscreen(this)">पूर्ण दृश्य पाहा</button>
+                        <a class="view-link ripple-btn" 
+                                href="https://rohanborsa6600-tech.github.io/Geeta-/index.html"
+                                onclick="playClickSound()">पूर्ण दृश्य पाहा</a>
                     </div>
                     
                     <!-- THUMBNAIL PREVIEW -->
                     <div class="project-thumbnail-container">
-                        <img src="https://placehold.co/800x600/334155/ffd6a5?text=Project+3+Preview" class="project-thumbnail" alt="Project 3 Preview">
+                        <img src="https://placehold.co/800x400/334155/ffd6a5?text=Project+3+Preview" class="project-thumbnail" alt="Project 3 Preview">
                         <div class="thumbnail-overlay">VIEW LIVE DEMO</div>
                     </div>
                 </div>
 
                 <!-- 4. प्रोजेक्ट फ्रेम -->
                 <div class="iframe-panel liquid-glass" tabindex="0">
-                    <h2 class="project-title">स्थलपोथी</h2>
+                    <h2 class="project-title">स्थळपोथी</h2>
                     <div class="view-control">
-                        <button class="fullscreen-btn ripple-btn" 
-                                data-url="https://rohanborsa6600-tech.github.io/Adx/"
-                                onclick="openFullscreen(this)">पूर्ण दृश्य पाहा</button>
+                        <a class="view-link ripple-btn" 
+                                href="https://rohanborsa6600-tech.github.io/Adx/"
+                                onclick="playClickSound()">पूर्ण दृश्य पाहा</a>
                     </div>
                     
                     <!-- THUMBNAIL PREVIEW -->
                     <div class="project-thumbnail-container">
-                        <img src="https://placehold.co/800x600/1e293b/c77dff?text=Project+4+Preview" class="project-thumbnail" alt="Project 4 Preview">
+                        <img src="https://placehold.co/800x400/1e293b/c77dff?text=Project+4+Preview" class="project-thumbnail" alt="Project 4 Preview">
                         <div class="thumbnail-overlay">VIEW LIVE DEMO</div>
                     </div>
                 </div>
@@ -369,21 +369,12 @@
         </footer>
     </div>
 
-    <!-- 6. FULL-SCREEN OVERLAY & CONTEXTUAL LOADER -->
-    <div id="fullscreen-overlay">
-        <button class="close-btn" onclick="closeFullscreen()">✕</button>
-        <div class="loader-spinner"></div>
-        <iframe id="fullscreen-iframe" src="" title="Full Screen View"></iframe>
-    </div>
-
     <!-- ========================================================= -->
     <!-- JAVASCRIPT LOGIC -->
     <!-- ========================================================= -->
 
     <script>
         // Global variables
-        const overlay = document.getElementById('fullscreen-overlay');
-        const fullscreenIframe = document.getElementById('fullscreen-iframe');
         const iframeGrid = document.getElementById('iframe-grid');
         const panels = document.querySelectorAll('.iframe-panel');
         const bg = document.getElementById('parallax-bg');
@@ -413,10 +404,11 @@
                 oscillator.stop(audioContext.currentTime + 0.15);
                 
             } catch (e) {
-                console.warn("Audio API not supported or failed to start.");
+                // Audio not supported or failed to start (Ignored)
             }
         }
-        
+        window.playClickSound = playClickSound; // Make globally accessible for onClick
+
         // --- B. THEME TOGGLE (Light/Dark Mode) ---
         themeToggle.addEventListener('click', () => {
             playClickSound();
@@ -456,53 +448,8 @@
             }
             requestAnimationFrame(updateFPS);
         }
-
-        // --- D. CONTEXTUAL LOADING & FULLSCREEN LOGIC ---
-        window.openFullscreen = (button) => {
-            playClickSound();
-            
-            const url = button.getAttribute('data-url');
-            if (url) {
-                // Reset state
-                overlay.classList.remove('loaded');
-                fullscreenIframe.style.opacity = '0';
-                fullscreenIframe.src = '';
-                
-                // Show overlay and spinner
-                overlay.style.display = 'flex';
-                
-                // Start loading the content
-                fullscreenIframe.src = url;
-                
-                // Handle loading completion
-                fullscreenIframe.onload = () => {
-                    overlay.classList.add('loaded'); // Show iframe
-                };
-                
-                history.pushState({ fullscreen: true, url: url }, '', '#fullscreen');
-            }
-        };
-
-        window.closeFullscreen = () => {
-            playClickSound();
-            overlay.style.display = 'none';
-            fullscreenIframe.src = ''; 
-            overlay.classList.remove('loaded');
-            
-            if (history.state && history.state.fullscreen) {
-                history.back();
-            }
-        };
         
-        window.addEventListener('popstate', () => {
-            if (overlay.style.display === 'flex') {
-                overlay.style.display = 'none';
-                fullscreenIframe.src = '';
-                overlay.classList.remove('loaded');
-            }
-        });
-
-        // --- E. ADAPTIVE GRID HIGHLIGHT & 3D TILT ---
+        // --- D. ADAPTIVE GRID HIGHLIGHT & 3D TILT ---
         document.addEventListener('DOMContentLoaded', () => {
             // Start clock and FPS monitor
             setInterval(updateTime, 1000);
@@ -545,24 +492,8 @@
                 });
             });
         });
-        // ... inside openFullscreen function
-    const loadingTimeout = setTimeout(() => {
-        if (!fullscreenIframe.classList.contains('loaded')) {
-            // Show error if iframe has not yet triggered onload
-            overlay.classList.add('error-state');
-        }
-    }, 8000); // 8 second timeout
-
-    // Handle loading completion
-    fullscreenIframe.onload = () => {
-        clearTimeout(loadingTimeout); // Clear timeout on success
-        overlay.classList.add('loaded');
-        overlay.classList.remove('error-state'); // Clear any potential error state
-    };
-// ...
-
-Aata jar tumcha project open nahi zala, tar dashboard tumhala spashta sangel ki **"Content Load Failed"**. Tumhi tumche itar URLs check karu shakta ani disel ki loading issue tumchya dashboard code mule ahe ki tumchya GitHub Pages project mule.
-        // --- F. PARALLAX SCROLL LOGIC ---
+        
+        // --- E. PARALLAX SCROLL LOGIC ---
         window.addEventListener('scroll', () => {
             if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
