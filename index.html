@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADX</title>
+    <!-- Tailwind CSS (optional, but useful for quick structure) -->
+    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+    <style>
+        /* ========================================================= */
+        /* CSS VARIABLES & RETRO THEME SETUP */
+        /* ========================================================= */
+        
+        :root {
+            /* Retro Colors & Hues */
+            --color-bg-deep: #19013e;       /* Deep Violet */
+            --color-neon-pink: #ff00ff;     /* Vivid Magenta */
+            --color-neon-cyan: #00ffff;     /* Vivid Cyan */
+            --color-text-retro: #e7e7e7;
+            
+            /* Liquid Glass Properties */
+            --liquid-tint: rgba(255, 0, 255, 0.15); /* Translucent Pink/Purple Tint */
+            --liquid-border: 1px solid rgba(0, 255, 255, 0.3);
+            --liquid-blur: 15px;
+            --bubble-radius: 25px;          /* High border radius for bubbly feel */
+            
+            /* Motion */
+            --transition-speed: 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); /* Bubbly spring effect */
+        }
+
+        /* Base Reset */
+        body {
+            background-color: var(--color-bg-deep);
+            color: var(--color-text-retro);
+            /* Retro/Arcade Font (fallback) */
+            font-family: 'Courier New', monospace; 
+            padding: 0;
+            margin: 0;
+            line-height: 1.5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+            font-size: 16px;
+        }
+        
+        /* ========================================================= */
+        /* 1. RETRO BACKGROUND (Animated Plasma) */
+        /* ========================================================= */
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: 
+                /* Subtle Scanlines */
+                linear-gradient(rgba(10, 0, 20, 0) 50%, rgba(0,0,0,0.2) 50%),
+                /* Animated Plasma Flow */
+                linear-gradient(135deg, var(--color-neon-pink) 0%, var(--color-neon-cyan) 50%, var(--color-bg-deep) 100%);
+            background-size: 100% 4px, 400% 400%;
+            opacity: 0.6;
+            filter: blur(50px);
+            animation: plasmaFlow 20s ease infinite alternate;
+        }
+
+        @keyframes plasmaFlow {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
+        /* ========================================================= */
+        /* 2. LIQUID GLASS CORE UTILITIES */
+        /* ========================================================= */
+
+        .liquid-glass {
+            background-color: var(--liquid-tint);
+            border: var(--liquid-border);
+            border-radius: var(--bubble-radius);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+            overflow: hidden; 
+            position: relative;
+            
+            /* Liquid/Frosted Effect */
+            backdrop-filter: blur(var(--liquid-blur));
+            -webkit-backdrop-filter: blur(var(--liquid-blur));
+            transition: all var(--transition-speed);
+        }
+
+        /* Fallback for browsers without backdrop-filter */
+        @supports not (backdrop-filter: blur(var(--liquid-blur))) {
+            .liquid-glass {
+                background-color: rgba(25, 1, 62, 0.9); /* Solid Retro-Dark Tint */
+            }
+        }
+        
+        /* ========================================================= */
+        /* 3. LAYOUT & IFRAME SPECIFIC STYLES */
+        /* ========================================================= */
+
+        .main-container {
+            width: 100%;
+            max-width: 1400px;
+            padding: 20px;
+            margin: 0 auto;
+        }
+
+        /* --- Navbar (Simple Retro Text) --- */
+        .navbar {
+            width: 100%;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: transparent; 
+            z-index: 10;
+        }
+        .logo {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--color-neon-pink);
+            text-shadow: 0 0 8px var(--color-neon-pink);
+        }
+
+        /* --- Dashboard Headline --- */
+        .dashboard-header {
+            text-align: center;
+            padding: 50px 0 60px;
+        }
+
+        .headline {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--color-neon-cyan); 
+            text-shadow: 0 0 15px var(--color-neon-cyan);
+            letter-spacing: 5px;
+        }
+
+        .subheadline {
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            color: var(--color-neon-pink);
+            text-shadow: 0 0 5px rgba(255, 0, 255, 0.4);
+        }
+
+        /* --- Iframe Grid --- */
+        .iframe-grid {
+            display: grid;
+            /* 2 columns for a dashboard feel */
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr)); 
+            gap: 40px;
+            padding-bottom: 80px;
+        }
+
+        .iframe-panel {
+            min-height: 550px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            
+            /* Initial Neon Border Glow */
+            box-shadow: 0 0 5px var(--color-neon-pink); 
+        }
+
+        .iframe-panel:hover, .iframe-panel:focus-within {
+            /* Pulsating Neon Glow + Bubbly Lift */
+            box-shadow: 0 0 10px var(--color-neon-pink), 0 0 20px var(--color-neon-cyan), 0 0 30px var(--color-neon-pink);
+            transform: translateY(-8px) scale(1.02); /* Exaggerated bubbly lift */
+        }
+        
+        .iframe-panel:active {
+            transform: translateY(0) scale(1.0); /* Press effect */
+        }
+
+        .project-title {
+            font-size: 1.3rem;
+            color: var(--color-neon-cyan);
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px dashed rgba(0, 255, 255, 0.2);
+            text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+        }
+
+        /* The Iframe itself */
+        .embedded-project {
+            flex-grow: 1; 
+            width: 100%;
+            min-height: 400px; 
+            border: none;
+            background-color: transparent;
+            border-radius: 18px; /* Slightly less round than panel */
+            /* Retro Screen Effect (Subtle inner glow) */
+            box-shadow: inset 0 0 10px rgba(0, 255, 255, 0.3);
+        }
+
+        /* Footer */
+        .footer {
+            width: 100%;
+            max-width: 1400px;
+            padding: 20px;
+            border-top: 1px solid var(--color-neon-pink);
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--color-neon-pink);
+            text-shadow: 0 0 3px rgba(255, 0, 255, 0.5);
+        }
+
+        /* ========================================================= */
+        /* RESPONSIVENESS */
+        /* ========================================================= */
+
+        @media (max-width: 1100px) {
+            .iframe-grid {
+                grid-template-columns: 1fr; /* Mobile/Tablet: 1 column */
+                gap: 30px;
+            }
+            .iframe-panel {
+                 min-height: 400px;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .navbar {
+                flex-direction: column;
+            }
+            .headline {
+                font-size: 2rem;
+                letter-spacing: 3px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-container">
+        <!-- Minimal Top Navbar -->
+        <header class="navbar">
+            <div class="logo">CLARITY // SYS</div>
+            <div class="nav-links">
+                <a href="#" class="nav-link" style="color:var(--color-neon-cyan);">LOAD</a>
+                <span style="color:var(--color-neon-pink);">|</span>
+                <a href="#" class="nav-link" style="color:var(--color-neon-pink);">STATUS</a>
+            </div>
+        </header>
+
+        <!-- Dashboard Headline -->
+        <div class="dashboard-header">
+            <h1 class="headline">ADX</h1>
+            <p class="subheadline">SHREE DEVDATT ASHRAM</p>
+        </div>
+
+        <!-- Iframe Grid -->
+        <main class="iframe-grid">
+            
+            <!-- 1. प्रोजेक्ट फ्रेम (तुमची पहिली वेबसाइट) -->
+            <div class="iframe-panel liquid-glass" tabindex="0">
+                <h2 class="project-title">GEETA</h2>
+                <iframe 
+                    class="embedded-project"
+                    src="https://rohanborsa6600-tech.github.io/Geeta-/index.html" 
+                    title="GEETA"
+                    loading="lazy"
+                    sandbox="allow-scripts allow-same-origin allow-popups">
+                </iframe>
+            </div>
+
+            <!-- 2. प्रोजेक्ट फ्रेम (तुमची दुसरी वेबसाइट) -->
+            <div class="iframe-panel liquid-glass" tabindex="0">
+                <h2 class="project-title">SUTRAPATH</h2>
+                <iframe 
+                    class="embedded-project"
+                    src="https://rohanborsa6600-tech.github.io/Sutrapath-/#auto-section-23" 
+                    title="SUTRAPATH"
+                    loading="lazy"
+                    sandbox="allow-scripts allow-same-origin allow-popups">
+                </iframe>
+            </div>
+
+            <!-- 3. प्रोजेक्ट फ्रेम (तुमची तिसरी वेबसाइट) -->
+            <div class="iframe-panel liquid-glass" tabindex="0">
+                <h2 class="project-title">SUMANMALA</h2>
+                <iframe 
+                    class="embedded-project"
+                    src="https://rohanborsa6600-tech.github.io/Sumanmala1/#section-14" 
+                    title="SUMANMALA"
+                    loading="lazy"
+                    sandbox="allow-scripts allow-same-origin allow-popups">
+                </iframe>
+            </div>
+
+            <!-- 4. प्रोजेक्ट फ्रेम (तुमची चौथी वेबसाइट) -->
+            <div class="iframe-panel liquid-glass" tabindex="0">
+                <h2 class="project-title">STHALPOTHI</h2>
+                <iframe 
+                    class="embedded-project"
+                    src="https://rohanborsa6600-tech.github.io/Adx/" 
+                    title="STHALPOTHI"
+                    loading="lazy"
+                    sandbox="allow-scripts allow-same-origin allow-popups">
+                </iframe>
+            </div>
+        </main>
+    </div>
+
+    <!-- Minimal Footer -->
+    <footer class="footer">
+        <p>श्री देवदत्त आश्रम,जाधववाडी </p>
+    </footer>
+</body>
+</html>
