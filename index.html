@@ -9,14 +9,14 @@
     
     <style>
         /* ========================================================= */
-        /* 1. CORE VARIABLES & THEME SETUP (ELECTRIC GLOW GRADIENT) */
+        /* 1. CORE VARIABLES & THEME SETUP (NATURAL SOOTHING GRADIENT) */
         /* ========================================================= */
         
         :root {
-            /* DARK THEME DEFAULTS (ELECTRIC GLOW) */
-            --color-bg-start: #192a4e;       /* Darker Navy */
-            --color-bg-end: #2d4681;         /* Deep Indigo */
-            --color-accent-soft: #B2FFDA;   /* Light Mint Green Accent */
+            /* DARK THEME DEFAULTS (NATURAL SOOTHING) */
+            --color-bg-start: #2f4f4f;       /* Dark Slate/Forest Green */
+            --color-bg-end: #465c5c;         /* Muted Green-Gray */
+            --color-accent-soft: #90EE90;   /* Light Green Accent */
             --color-text-primary: #f0f8ff;  /* Near White */
             --color-text-secondary: #c2d0f0;/* Muted Light Blue */
             --liquid-tint: rgba(255, 255, 255, 0.08); 
@@ -27,18 +27,18 @@
             --lift-amount: -8px;
             --transition-speed: 0.4s ease-in-out;
             
-            /* GLOW COLORS */
+            /* GLOW COLORS (KEPT BRIGHT FOR CONTRAST) */
             --glow-start-color: #2F80ED; /* Bright Blue */
             --glow-end-color: #B2FFDA;   /* Light Mint Green */
 
-            /* Stack Variables */
+            /* Stack Variables (IGNORED IN LAYOUT) */
             --stack-offset: 10px; 
             --max-index: 4; 
         }
 
         /* LIGHT THEME (SUBTLE SHIFT) */
         body.light-mode {
-            --color-bg-start: #e9f0f7;      
+            --color-bg-start: #e0eee0;      /* Very Light Greenish Gray */
             --color-bg-end: #f4f7fa;        
             --color-accent-soft: #2F80ED;   
             --color-text-primary: #1e293b;  
@@ -51,7 +51,7 @@
 
         /* Parallax Background Adjustment */
         #parallax-bg {
-            background: radial-gradient(circle at center, var(--color-bg-start) 0%, #0c1527 100%);
+            background: radial-gradient(circle at center, var(--color-bg-start) 0%, #203535 100%);
         }
         body.light-mode #parallax-bg { 
             background: radial-gradient(circle at center, var(--color-bg-end) 0%, var(--color-bg-start) 100%); 
@@ -107,7 +107,7 @@
             background-size: 300% 300%; 
             animation: continuousGlow 5s ease infinite alternate; 
             z-index: -1; border-radius: 18px; 
-            opacity: 0.6; /* Continuous glow opacity */
+            opacity: 0.6; 
             filter: blur(8px); 
             transition: opacity 0.4s ease-out, filter 0.4s ease-out;
         }
@@ -127,7 +127,7 @@
                 var(--card-shadow), 
                 0 0 25px rgba(47, 128, 237, 0.4), 
                 0 0 25px rgba(178, 255, 218, 0.4); 
-            /* Transform is handled in media queries/JS for stacking */
+            transform: translateY(var(--lift-amount)) scale(1.02); 
             z-index: 1000; 
         }
 
@@ -149,13 +149,17 @@
         .status-animate { animation: subtleFade 2s infinite alternate; }
 
         /* ========================================================= */
-        /* 3. LAYOUT & GRID */
+        /* 3. LAYOUT & GRID (Clean List View) */
         /* ========================================================= */
 
         .main-container { width: 95%; max-width: 1600px; padding: 20px 2.5% 0; margin: 0 auto; }
         .iframe-grid { 
-            display: grid; grid-template-columns: 1fr; gap: 40px; padding-bottom: 60px; width: 100%;
-            padding-top: 50px; 
+            display: grid; 
+            grid-template-columns: 1fr; 
+            gap: 40px; 
+            padding-bottom: 60px; 
+            width: 100%;
+            padding-top: 0; 
         }
 
         /* 6. 3D Project Title Hover */
@@ -176,19 +180,20 @@
             animation: titleGlow 1s ease-in-out infinite alternate; 
         }
 
-        /* List View Grid Layout */
+        /* List View Grid Layout (Standard) */
         .iframe-panel { 
             min-height: 150px; padding: 20px; display: grid; grid-template-columns: 150px 1fr; 
             grid-template-areas: "thumb title" "thumb tags" "thumb control"; gap: 20px;
             align-items: center; cursor: pointer; transform-style: preserve-3d; perspective: 800px; 
             transition: all var(--transition-speed), opacity 0.6s; opacity: 0; position: relative;
             transform: none; z-index: auto; margin-bottom: 0;
+            filter: none !important; 
         }
         
         .iframe-panel.show { opacity: 1; animation: slideInUp 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; }
         
-        .project-thumbnail-container { grid-area: thumb; width: 100%; height: 110px; min-height: 110px; max-height: 110px; border-radius: 8px; margin-bottom: 0; align-self: flex-start; }
-        .tags-list { grid-area: tags; font-size: 0.8rem; align-self: flex-start; margin-bottom: 5px; }
+        .project-thumbnail-container { grid-area: thumb; width: 100%; height: 110px; min-height: 110px; max-height: 110px; border-radius: 8px; margin-bottom: 0; align-self: flex-start; display: block; }
+        .tags-list { grid-area: tags; font-size: 0.8rem; align-self: flex-start; margin-bottom: 5px; text-align: left; }
         .view-control { grid-area: control; display: flex; justify-content: flex-end; align-items: flex-end; margin-bottom: 0; margin-top: auto; }
 
 
@@ -198,76 +203,76 @@
         
         /* 2. Logo Pulse/Glow */
         @keyframes pulseGlow {
-            0% { opacity: 0.8; transform: scale(1); } 50% { opacity: 1; transform: scale(1.01); text-shadow: 0 0 15px var(--color-accent-soft); }
-            100% { opacity: 0.8; transform: scale(1); }
+            0% { opacity: 0.9; transform: scale(1); } 50% { opacity: 1; transform: scale(1.02); text-shadow: 0 0 20px var(--color-accent-soft); }
+            100% { opacity: 0.9; transform: scale(1); }
         }
-        .logo { 
-            font-size: clamp(1.8rem, 3vw, 2.5rem); font-weight: 800; color: var(--color-accent-soft); 
-            letter-spacing: 3px; text-shadow: 0 0 10px rgba(132, 204, 22, 0.5); 
-            transition: color 0.3s; 
+        
+        /* Custom Class for the Main Title */
+        .main-title {
+            font-size: clamp(2.5rem, 5vw, 4rem); 
+            font-weight: 800; 
+            color: var(--color-accent-soft); 
+            letter-spacing: 4px; 
+            margin-bottom: 10px;
+            text-shadow: 0 0 15px var(--color-accent-soft); 
             animation: pulseGlow 4s ease-in-out infinite; 
         }
-        body.light-mode .logo { text-shadow: 0 0 8px rgba(59, 130, 246, 0.4); }
-
-        .dashboard-header { text-align: center; padding: 50px 0 60px; width: 100%; }
-        .headline { font-size: clamp(1.2rem, 2.5vw, 1.6rem); font-weight: 500; margin: 10px auto; color: var(--color-text-primary); letter-spacing: 1px; max-width: 800px; line-height: 1.8; }
         
+        /* Headline for the subhasita */
+        .headline-subhasita { 
+            font-size: clamp(1rem, 2vw, 1.2rem); 
+            font-weight: 500; 
+            color: var(--color-text-primary); 
+            letter-spacing: 1px; 
+            max-width: 800px; 
+            line-height: 1.8;
+            margin: 5px auto; 
+        }
+
+        .dashboard-header { 
+            text-align: center; 
+            padding: 50px 0 60px; 
+            width: 100%; 
+            display: flex; 
+            flex-direction: column;
+            align-items: center;
+        }
+
         /* ========================================================= */
-        /* 5. RESPONSIVE LAYOUT LOGIC (BOOK SHELF VIEW) */
+        /* 5. RESPONSIVE LAYOUT LOGIC */
         /* ========================================================= */
 
         /* --- Tablet/Desktop Breakpoint: DUAL Column Grid (769px and up) --- */
         @media (min-width: 769px) {
             .iframe-grid {
                 grid-template-columns: repeat(2, 1fr); 
-                gap: 50px; counter-reset: none; 
+                gap: 50px; 
                 padding-top: 0; 
             }
-            .iframe-panel:hover, .iframe-panel:active, .iframe-panel:focus { 
-                 transform: translateY(var(--lift-amount)) scale(1.02) !important;
-                 z-index: auto !important; 
-            }
-            .project-thumbnail-container { display: block !important; } /* Ensure thumbnail is visible */
         }
 
-        /* --- Mobile Breakpoint: Single Column + Book Shelf Stacking (768px and down) --- */
+        /* --- Mobile Breakpoint: Single Column (768px and down) --- */
         @media (max-width: 768px) {
             .iframe-grid {
-                counter-reset: stack-index; 
-                gap: 0; 
-                padding-top: 100px; /* Increased top padding for better stack visibility */
+                gap: 40px; 
+                padding-top: 0; 
             }
             
+            /* Mobile Vertical List View Overrides */
             .iframe-panel { 
-                /* Book Shelf Stacking Effects */
-                counter-increment: stack-index; 
-                z-index: calc(100 - counter(stack-index)); 
-                margin-bottom: calc(var(--stack-offset) * -1.5); /* Increased negative margin for tight stack */
-                
-                /* Book-like Proportions */
-                grid-template-columns: 1fr; /* Single Column for content inside the card */
-                min-height: 250px; /* Taller card */
-                max-width: 90%; 
-                width: 90%;
-                margin-left: 5%; /* Center the stack */
-
-                /* Default 3D Shelf Tilt and Depth */
-                transform-style: preserve-3d;
-                filter: brightness(0.8) opacity(0.9);
+                grid-template-columns: 1fr; 
+                grid-template-areas: "title" "tags" "thumb" "control"; 
+                gap: 10px; 
+                min-height: auto; 
+                max-width: none; 
+                width: 100%;
+                margin-left: 0; 
             }
-            
-            /* Hover/Active/Focus for Book Shelf */
-            .iframe-panel:hover, .iframe-panel:active, .iframe-panel:focus {
-                z-index: 1000; 
-                filter: brightness(1) opacity(1); /* Clear brightness on hover */
-                /* Transform is set by JS for accurate pop-out */
-            }
-            
-            /* Hide Thumbnails and adjust internal elements for the book spine look */
-            .project-thumbnail-container { display: none !important; }
-            .tags-list { text-align: center; margin-bottom: 20px; }
+            .project-thumbnail-container { height: 150px; max-height: 150px; display: block; }
             .view-control { justify-content: center; }
-            .project-title { text-align: center; border-bottom: none; }
+            .tags-list { text-align: center; }
+            .project-title { text-align: center; }
+            .main-title { font-size: 2rem; letter-spacing: 2px; } /* Smaller font on mobile */
         }
         
     </style>
@@ -285,18 +290,23 @@
     <div id="dashboard-content">
         <div class="main-container">
             <header class="navbar">
-                <div class="logo">ब्रह्मविद्या कल्पद्रुम</div> 
-                
                 <div class="system-status-panel">
                     <span id="current-time" class="status-animate">00:00:00</span>
                     <span id="fps-monitor" class="status-animate">FPS: --</span>
                     
                     <div id="theme-toggle" class="theme-toggle" title="थीम बदला"></div>
-                </header>
+                </div>
+            </header>
 
             <div class="dashboard-header">
-                <h1 class="headline">श्रीकृष्णरावो म्हणे उद्धवदेवा:हा ज्ञानरत्नाचा ठेवा:भलेतया हातीं नेदावा:अधिकारेंवीण ।।</h1>
-                <h1 class="headline">हे ज्ञानसुधा गोमटी:जे पान करीति कर्णपुटीं:तयां कहिं नाहिं कामाठी:जन्ममरणाची (श्रीउद्धवगीता)</h1>
+                <div class="main-title">ब्रह्मविद्या कल्पद्रुम</div> 
+                
+                <div style="margin-top: 30px;">
+                    <p class="headline-subhasita">श्रीकृष्णरावो म्हणे उद्धवदेवा : हा ज्ञानरत्नाचा ठेवा</p>
+                    <p class="headline-subhasita">भलेतया हातीं नेदावा : अधिकारेंवीण ।।</p>
+                    <p class="headline-subhasita" style="margin-top: 20px;">हे ज्ञानसुधा गोमटी : जे पान करीति कर्णपुटीं :</p>
+                    <p class="headline-subhasita">तयां कहिं नाहिं कामाठी : जन्ममरणाची (श्रीउद्धवगीता)</p>
+                </div>
             </div>
 
             <main class="iframe-grid" id="iframe-grid">
@@ -304,7 +314,7 @@
                 <div class="iframe-panel liquid-glass" tabindex="0" data-category="ग्रंथ, काव्य">
                     <div class="project-thumbnail-container">
                         <img src="https://placehold.co/150x110/1e293b/a3e635?text=SUMANMALA" class="project-thumbnail" alt="सुमनमाला">
-                        <div class="thumbnail-overlay">VIEW LIVE DEMO</div>
+                        <div class="thumbnail-overlay">VIEW LIVE </div>
                     </div>
                     <h2 class="project-title">सुमनमाला</h2>
                     <div class="tags-list">ग्रंथ, काव्य</div>
@@ -360,7 +370,7 @@
         </div>
 
         <footer class="footer">
-            <p>श्री देवदत्त आश्रम,जाधववाडी (ADX)© सर्व हक्क राखीव. </p>
+            <p>श्री देवदत्त आश्रम,जाधववाडी (ADX) © सर्व हक्क राखीव. </p>
         </footer>
     </div>
 
@@ -370,9 +380,7 @@
         const bg = document.getElementById('parallax-bg');
         const themeToggle = document.getElementById('theme-toggle');
         const body = document.body;
-        const stackOffset = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--stack-offset'));
         let audioContext = null;
-        const isMobileView = () => window.innerWidth <= 768;
 
 
         // --- A. AURAL FEEDBACK (Micro-sound) ---
@@ -439,32 +447,6 @@
         }
         
         // --- E. INITIALIZATION & INTERACTION LOGIC ---
-        
-        // Function to apply the stacking offset (for initial load and resize)
-        const applyStackTransform = () => {
-            if (isMobileView()) {
-                panels.forEach((panel, index) => {
-                    const stackDepth = panels.length - (index + 1);
-                    // NEW: Updated transform for 3D shelf view
-                    const initialTransformY = stackDepth * stackOffset * 0.7; 
-                    
-                    panel.style.transform = `
-                        perspective(1000px) 
-                        rotateX(5deg) 
-                        rotateY(5deg) 
-                        translateY(${initialTransformY}px)
-                    `;
-                    panel.style.filter = `brightness(0.8) opacity(0.9)`;
-                });
-            } else {
-                // Reset transform for dual column view
-                panels.forEach(panel => {
-                    panel.style.transform = `none`;
-                    panel.style.filter = `none`;
-                });
-            }
-        };
-
         document.addEventListener('DOMContentLoaded', () => {
             if (localStorage.getItem('theme') === 'light') {
                 body.classList.add('light-mode');
@@ -474,8 +456,6 @@
             requestAnimationFrame(updateFPS);
             registerServiceWorker(); 
             
-            document.documentElement.style.setProperty('--max-index', panels.length); 
-
             panels.forEach((panel, index) => {
                 // Entry Animation Trigger (Staggered)
                 setTimeout(() => {
@@ -490,62 +470,12 @@
                     iframeGrid.classList.remove('dim-active');
                 });
                 
-                // 3D Tilt Logic (Only for Book Shelf Hover)
-                panel.addEventListener('mousemove', (e) => {
-                    if (!isMobileView() || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-                    const rect = panel.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const y = e.clientY - rect.top;
-                    const centerX = rect.width / 2;
-                    const centerY = rect.height / 2;
-                    
-                    const rotateX = (y - centerY) / 40; 
-                    const rotateY = (x - centerX) / 40;
-                    
-                    const stackDepth = panels.length - (index + 1);
-                    const initialTransformY = stackDepth * stackOffset * 0.7;
-
-                    panel.style.transform = `
-                        perspective(1000px) 
-                        rotateX(${-rotateX}deg) 
-                        rotateY(${rotateY}deg)
-                        translateY(calc(${initialTransformY}px + var(--lift-amount))) 
-                        scale(1.02) 
-                    `;
-                });
-
-                panel.addEventListener('mouseleave', () => {
-                    if (!isMobileView()) return; 
-                    
-                    const stackDepth = panels.length - (index + 1);
-                    const initialTransformY = stackDepth * stackOffset * 0.7; 
-                    
-                    // Reset to default book shelf position
-                    panel.style.transform = `
-                        perspective(1000px) 
-                        rotateX(5deg) 
-                        rotateY(5deg) 
-                        translateY(${initialTransformY}px)
-                    `;
-                });
-                
                 // Click to navigate
                 panel.addEventListener('click', (e) => {
                     if (!e.target.closest('.view-link')) {
                         panel.querySelector('.view-link').click();
                     }
                 });
-            });
-            
-            // Apply stack on load after animation
-            setTimeout(applyStackTransform, 1000);
-
-            // Apply stack/reset on window resize
-            let resizeTimer;
-            window.addEventListener('resize', () => {
-                clearTimeout(resizeTimer);
-                resizeTimer = setTimeout(applyStackTransform, 200);
             });
         });
         
