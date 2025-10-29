@@ -27,7 +27,7 @@
             --lift-amount: -8px;
             --transition-speed: 0.4s ease-in-out;
             
-            /* GLOW COLORS (KEPT BRIGHT FOR CONTRAST) */
+            /* GLOW COLORS */
             --glow-start-color: #2F80ED; /* Bright Blue */
             --glow-end-color: #B2FFDA;   /* Light Mint Green */
 
@@ -38,7 +38,7 @@
 
         /* LIGHT THEME (SUBTLE SHIFT) */
         body.light-mode {
-            --color-bg-start: #e0eee0;      /* Very Light Greenish Gray */
+            --color-bg-start: #e0eee0;      
             --color-bg-end: #f4f7fa;        
             --color-accent-soft: #2F80ED;   
             --color-text-primary: #1e293b;  
@@ -85,7 +85,7 @@
         }
 
         /* ========================================================= */
-        /* 2. LIQUID GLASS & ANIMATIONS (GLOW AND INTERACTION) */
+        /* 2. LIQUID GLASS & ANIMATIONS */
         /* ========================================================= */
         
         /* Continuous Glow Keyframes */
@@ -168,9 +168,16 @@
             50% { color: var(--color-text-primary); text-shadow: 0 0 5px var(--color-accent-soft); }
             100% { color: var(--color-accent-soft); text-shadow: none; }
         }
+        
+        /* MODIFIED: Project Title Size Increased */
         .project-title { 
-            grid-area: title; font-size: 1.2rem; padding-bottom: 5px; margin-bottom: 5px; 
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1); transition: all 0.3s ease-out; 
+            /* NEW SIZE: Larger font for prominence */
+            font-size: clamp(1.5rem, 3vw, 2rem); 
+            font-weight: 600; /* Slightly bolder */
+            grid-area: title; 
+            padding-bottom: 5px; margin-bottom: 10px; /* Increased margin */
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
+            transition: all 0.3s ease-out; 
         }
         .iframe-panel:hover .project-title,
         .iframe-panel:active .project-title, 
@@ -180,11 +187,21 @@
             animation: titleGlow 1s ease-in-out infinite alternate; 
         }
 
-        /* List View Grid Layout (Standard) */
+        /* MODIFIED: List View Grid Layout (Thumbnail Removed) */
         .iframe-panel { 
-            min-height: 150px; padding: 20px; display: grid; grid-template-columns: 150px 1fr; 
-            grid-template-areas: "thumb title" "thumb tags" "thumb control"; gap: 20px;
-            align-items: center; cursor: pointer; transform-style: preserve-3d; perspective: 800px; 
+            min-height: 150px; 
+            padding: 20px; 
+            display: grid; 
+            /* Grid now uses only one column for content */
+            grid-template-columns: 1fr; 
+            /* Redefined areas: Title, Tags, Control (Thumb removed) */
+            grid-template-areas: 
+                "title"
+                "tags"
+                "control";
+            gap: 10px; /* Reduced gap since thumbnail is gone */
+            align-items: center; 
+            cursor: pointer; transform-style: preserve-3d; perspective: 800px; 
             transition: all var(--transition-speed), opacity 0.6s; opacity: 0; position: relative;
             transform: none; z-index: auto; margin-bottom: 0;
             filter: none !important; 
@@ -192,7 +209,9 @@
         
         .iframe-panel.show { opacity: 1; animation: slideInUp 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; }
         
-        .project-thumbnail-container { grid-area: thumb; width: 100%; height: 110px; min-height: 110px; max-height: 110px; border-radius: 8px; margin-bottom: 0; align-self: flex-start; display: block; }
+        /* HIDE THUMBNAIL CONTAINER */
+        .project-thumbnail-container { display: none !important; }
+        
         .tags-list { grid-area: tags; font-size: 0.8rem; align-self: flex-start; margin-bottom: 5px; text-align: left; }
         .view-control { grid-area: control; display: flex; justify-content: flex-end; align-items: flex-end; margin-bottom: 0; margin-top: auto; }
 
@@ -249,6 +268,10 @@
                 gap: 50px; 
                 padding-top: 0; 
             }
+            .iframe-panel {
+                /* Reset alignment for dual column view */
+                align-items: flex-start;
+            }
         }
 
         /* --- Mobile Breakpoint: Single Column (768px and down) --- */
@@ -261,18 +284,17 @@
             /* Mobile Vertical List View Overrides */
             .iframe-panel { 
                 grid-template-columns: 1fr; 
-                grid-template-areas: "title" "tags" "thumb" "control"; 
+                grid-template-areas: "title" "tags" "control"; /* No thumb area */
                 gap: 10px; 
                 min-height: auto; 
                 max-width: none; 
                 width: 100%;
                 margin-left: 0; 
             }
-            .project-thumbnail-container { height: 150px; max-height: 150px; display: block; }
             .view-control { justify-content: center; }
             .tags-list { text-align: center; }
             .project-title { text-align: center; }
-            .main-title { font-size: 2rem; letter-spacing: 2px; } /* Smaller font on mobile */
+            .main-title { font-size: 2rem; letter-spacing: 2px; } 
         }
         
     </style>
@@ -312,10 +334,6 @@
             <main class="iframe-grid" id="iframe-grid">
                 
                 <div class="iframe-panel liquid-glass" tabindex="0" data-category="ग्रंथ, काव्य">
-                    <div class="project-thumbnail-container">
-                        <img src="https://placehold.co/150x110/1e293b/a3e635?text=SUMANMALA" class="project-thumbnail" alt="सुमनमाला">
-                        <div class="thumbnail-overlay">VIEW LIVE </div>
-                    </div>
                     <h2 class="project-title">सुमनमाला</h2>
                     <div class="tags-list">ग्रंथ, काव्य</div>
                     <div class="view-control">
@@ -326,10 +344,6 @@
                 </div>
 
                 <div class="iframe-panel liquid-glass" tabindex="0" data-category="अभ्यास, पाठ">
-                    <div class="project-thumbnail-container">
-                        <img src="https://placehold.co/150x110/0f172a/7efcff?text=SUTRAPATH" class="project-thumbnail" alt="सूत्रपाठ ">
-                        <div class="thumbnail-overlay">VIEW LIVE </div>
-                    </div>
                     <h2 class="project-title">सूत्रपाठ</h2>
                     <div class="tags-list">अभ्यास, पाठ</div>
                     <div class="view-control">
@@ -340,10 +354,6 @@
                 </div>
 
                 <div class="iframe-panel liquid-glass" tabindex="0" data-category="ग्रंथ, अध्यात्म">
-                    <div class="project-thumbnail-container">
-                        <img src="https://placehold.co/150x110/334155/ffd6a5?text=GITAPATH" class="project-thumbnail" alt="गीतापाठ">
-                        <div class="thumbnail-overlay">VIEW LIVE </div>
-                    </div>
                     <h2 class="project-title">गीतापाठ</h2>
                     <div class="tags-list">ग्रंथ, अध्यात्म</div>
                     <div class="view-control">
@@ -354,10 +364,6 @@
                 </div>
 
                 <div class="iframe-panel liquid-glass" tabindex="0" data-category="इतिहास, स्थळ">
-                    <div class="project-thumbnail-container">
-                        <img src="https://placehold.co/150x110/1e293b/c77dff?text=STHALPOTHI" class="project-thumbnail" alt="स्थळपोथी">
-                        <div class="thumbnail-overlay">VIEW LIVE </div>
-                    </div>
                     <h2 class="project-title">स्थळपोथी</h2>
                     <div class="tags-list">इतिहास, स्थळ</div>
                     <div class="view-control">
@@ -370,7 +376,7 @@
         </div>
 
         <footer class="footer">
-            <p>श्री देवदत्त आश्रम,जाधववाडी (ADX) © सर्व हक्क राखीव. </p>
+            <p>श्री देवदत्त आश्रम,जाधववाडी© सर्व हक्क राखीव. </p>
         </footer>
     </div>
 
