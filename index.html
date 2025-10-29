@@ -545,7 +545,23 @@
                 });
             });
         });
-        
+        // ... inside openFullscreen function
+    const loadingTimeout = setTimeout(() => {
+        if (!fullscreenIframe.classList.contains('loaded')) {
+            // Show error if iframe has not yet triggered onload
+            overlay.classList.add('error-state');
+        }
+    }, 8000); // 8 second timeout
+
+    // Handle loading completion
+    fullscreenIframe.onload = () => {
+        clearTimeout(loadingTimeout); // Clear timeout on success
+        overlay.classList.add('loaded');
+        overlay.classList.remove('error-state'); // Clear any potential error state
+    };
+// ...
+
+Aata jar tumcha project open nahi zala, tar dashboard tumhala spashta sangel ki **"Content Load Failed"**. Tumhi tumche itar URLs check karu shakta ani disel ki loading issue tumchya dashboard code mule ahe ki tumchya GitHub Pages project mule.
         // --- F. PARALLAX SCROLL LOGIC ---
         window.addEventListener('scroll', () => {
             if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
