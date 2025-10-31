@@ -14,16 +14,7 @@
       --glow-color: #9be2ff;
       --blur: 14px;
       --bg-overlay: rgba(0, 0, 0, 0.55);
-      --bg-image: url('https://images.unsplash.com/photo-1501594907352-04cda38ebc29?auto=format&fit=crop&w=1920&q=80');
-    }
-
-    body.light {
-      --glass-bg: rgba(255, 255, 255, 0.35);
-      --glass-border: rgba(255, 255, 255, 0.6);
-      --text-color: #111;
-      --glow-color: #00bcd4;
-      --bg-overlay: rgba(255, 255, 255, 0.4);
-      --bg-image: url('https://images.unsplash.com/photo-1503264116251-35a269479413?auto=format&fit=crop&w=1920&q=80');
+      --bg-image: url('9589A835-2E55-4144-98CD-41144021FAB9.jpeg'); /* तुझा फोटो */
     }
 
     body {
@@ -36,8 +27,8 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      transition: background 0.6s ease, color 0.4s ease;
       overflow-x: hidden;
+      transition: background 0.6s ease, color 0.4s ease;
     }
 
     /* Header */
@@ -59,60 +50,7 @@
       font-size: 1.2rem;
     }
 
-    /* Search + Filter */
-    .search-filter-bar {
-      margin-top: 25px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      justify-content: center;
-      width: 90%;
-      max-width: 600px;
-    }
-
-    .search-container {
-      flex: 1 1 250px;
-      display: flex;
-      align-items: center;
-      background: rgba(255,255,255,0.1);
-      border: 1px solid var(--glow-color);
-      border-radius: 25px;
-      padding: 6px 16px;
-      backdrop-filter: blur(8px);
-    }
-
-    .search-container input {
-      width: 100%;
-      background: transparent;
-      border: none;
-      outline: none;
-      font-size: 1rem;
-      color: var(--text-color);
-    }
-
-    .search-container input::placeholder {
-      color: rgba(255,255,255,0.6);
-    }
-
-    .filter-btn {
-      padding: 8px 18px;
-      border: 1px solid var(--glow-color);
-      background: rgba(255, 255, 255, 0.1);
-      color: var(--text-color);
-      border-radius: 20px;
-      cursor: pointer;
-      backdrop-filter: blur(8px);
-      transition: 0.3s;
-      font-size: 1rem;
-    }
-
-    .filter-btn:hover, .filter-btn.active {
-      background: var(--glow-color);
-      color: #000;
-      box-shadow: 0 0 18px var(--glow-color);
-    }
-
-    /* Grid */
+    /* Grid layout */
     .iframe-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -122,7 +60,7 @@
       margin: 50px auto;
     }
 
-    /* Glass panels */
+    /* Liquid glass panels */
     .iframe-panel {
       backdrop-filter: blur(var(--blur));
       background: var(--glass-bg);
@@ -168,8 +106,6 @@
       font-weight: bold;
       backdrop-filter: blur(6px);
       transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
     }
 
     .view-link:hover {
@@ -177,27 +113,7 @@
       box-shadow: 0 0 20px var(--glow-color);
     }
 
-    /* Theme toggle */
-    .theme-toggle {
-      position: fixed;
-      top: 20px;
-      right: 25px;
-      background: rgba(255, 255, 255, 0.15);
-      border: 1px solid var(--glow-color);
-      color: var(--text-color);
-      border-radius: 50%;
-      width: 42px;
-      height: 42px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      backdrop-filter: blur(8px);
-      box-shadow: 0 0 10px var(--glow-color);
-      font-size: 1.2rem;
-      transition: 0.3s;
-    }
-
+    /* Footer */
     .footer {
       text-align: center;
       margin: 40px 0 20px;
@@ -214,8 +130,6 @@
 </head>
 
 <body>
-  <div class="theme-toggle" id="themeToggle" title="Switch Theme">🌗</div>
-
   <div class="dashboard-header">
     <div class="main-title">ब्रह्मविद्या कल्पद्रुम</div>
     <div style="margin-top: 30px;">
@@ -224,40 +138,28 @@
       <p class="headline-subhasita" style="margin-top: 20px;">हे ज्ञानसुधा गोमटी : जे पान करीति कर्णपुटीं :</p>
       <p class="headline-subhasita">तयां कहिं नाहिं कामाठी : जन्ममरणाची (श्रीउद्धवगीता)</p>
     </div>
-
-    <!-- Search + Filter -->
-    <div class="search-filter-bar">
-      <div class="search-container">
-        <input type="text" id="searchBar" placeholder="🔍 शोधा – ग्रंथ, काव्य, स्थळ, पाठ...">
-      </div>
-      <button class="filter-btn active" data-filter="all">सर्व</button>
-      <button class="filter-btn" data-filter="काव्य">काव्य</button>
-      <button class="filter-btn" data-filter="पाठ">पाठ</button>
-      <button class="filter-btn" data-filter="स्थळ">अध्यात्म</button>
-      <button class="filter-btn" data-filter="भाष्य">इतिहास</button>
-    </div>
   </div>
 
-  <main class="iframe-grid" id="iframe-grid">
-    <div class="iframe-panel" data-category="काव्य">
+  <main class="iframe-grid">
+    <div class="iframe-panel">
       <h2 class="project-title">सुमनमाला</h2>
       <div class="tags-list">काव्य</div>
       <a class="view-link" href="https://rohanborsa6600-tech.github.io/Sumanmala1/#section-14">VIEW</a>
     </div>
 
-    <div class="iframe-panel" data-category="पाठ">
+    <div class="iframe-panel">
       <h2 class="project-title">सूत्रपाठ</h2>
       <div class="tags-list">पाठ</div>
       <a class="view-link" href="https://rohanborsa6600-tech.github.io/Sutrapath-/#auto-section-23">VIEW</a>
     </div>
 
-    <div class="iframe-panel" data-category="पाठ">
+    <div class="iframe-panel">
       <h2 class="project-title">गीतापाठ</h2>
       <div class="tags-list">पाठ</div>
       <a class="view-link" href="https://rohanborsa6600-tech.github.io/Geeta-/index.html">VIEW</a>
     </div>
 
-    <div class="iframe-panel" data-category="स्थळ">
+    <div class="iframe-panel">
       <h2 class="project-title">स्थळपोथी</h2>
       <div class="tags-list">स्थळ</div>
       <a class="view-link" href="https://rohanborsa6600-tech.github.io/Adx/">VIEW</a>
@@ -267,45 +169,5 @@
   <footer class="footer">
     <p>श्री देवदत्त आश्रम, जाधववाडी (ADX) © सर्व हक्क राखीव.</p>
   </footer>
-
-  <script>
-    const clickSound = new Audio("https://cdn.pixabay.com/download/audio/2022/03/15/audio_4f8b0c9b2f.mp3?filename=ui-click-173479.mp3");
-    function playClickSound() { clickSound.currentTime = 0; clickSound.play(); }
-
-    // Theme toggle
-    document.getElementById("themeToggle").addEventListener("click", () => {
-      document.body.classList.toggle("light");
-      playClickSound();
-    });
-
-    // Filter system
-    const buttons = document.querySelectorAll('.filter-btn');
-    const panels = document.querySelectorAll('.iframe-panel');
-
-    buttons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        playClickSound();
-        buttons.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        const filter = btn.dataset.filter;
-        panels.forEach(panel => {
-          if (filter === 'all' || panel.dataset.category === filter) {
-            panel.style.display = 'block';
-          } else {
-            panel.style.display = 'none';
-          }
-        });
-      });
-    });
-
-    // Search
-    document.getElementById("searchBar").addEventListener("input", e => {
-      const term = e.target.value.toLowerCase();
-      panels.forEach(panel => {
-        const text = panel.textContent.toLowerCase();
-        panel.style.display = text.includes(term) ? "block" : "none";
-      });
-    });
-  </script>
 </body>
 </html>
