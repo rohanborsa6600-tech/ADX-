@@ -1,386 +1,498 @@
 <!DOCTYPE html>
-<html lang="mr">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ब्रह्मविद्या कल्पद्रुम</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Marathi&display=swap" rel="stylesheet">
-    
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-    <script src="https://accounts.google.com/gsi/client" async defer></script> 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ब्रह्मविद्या कल्पद्रुम </title>
+    
+    <link rel="manifest" href="/manifest.json">
+    
+    <style>
+        /* ========================================================= */
+        /* 1. CORE VARIABLES & THEME SETUP (NATURAL SOOTHING GRADIENT) */
+        /* ========================================================= */
+        
+        :root {
+            /* DARK THEME DEFAULTS (NATURAL SOOTHING) */
+            --color-bg-start: #2f4f4f;       /* Dark Slate/Forest Green */
+            --color-bg-end: #465c5c;         /* Muted Green-Gray */
+            --color-accent-soft: #90EE90;   /* Light Green Accent */
+            --color-text-primary: #f0f8ff;  /* Near White */
+            --color-text-secondary: #c2d0f0;/* Muted Light Blue */
+            --liquid-tint: rgba(255, 255, 255, 0.08); 
+            --liquid-border: 1px solid rgba(255, 255, 255, 0.2);
+            --liquid-blur: 20px;
+            --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); 
+            --inner-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+            --lift-amount: -8px;
+            --transition-speed: 0.4s ease-in-out;
+            
+            /* GLOW COLORS */
+            --glow-start-color: #2F80ED; /* Bright Blue */
+            --glow-end-color: #B2FFDA;   /* Light Mint Green */
 
-    <style>
-        /* ========================================================= */
-        /* 1. DARKER iOS 26 LIQUID GLASS VARIABLES */
-        /* ========================================================= */
-        :root {
-            --blur: 18px;
-            --glass-bg: rgba(0, 0, 0, 0.50); 
-            --glass-border: 1px solid rgba(255, 255, 255, 0.15); 
-            --accent: #b3e0ff; /* Soft, light blue accent for titles */
-            --text-color: #eaf6ff;
-            --transition-speed: 0.3s ease;
-        }
+            /* Stack Variables (IGNORED IN LAYOUT) */
+            --stack-offset: 10px; 
+            --max-index: 4; 
+        }
 
-        /* ========================================================= */
-        /* 2. BASE STYLES & PHOTO BACKGROUND */
-        /* ========================================================= */
-        body {
-            margin: 0;
-            /* IMAGE: "background.jpeg" हे नाव तुमच्या फाइलनुसार बदला */
-            background: url("background.jpeg") no-repeat center center/cover;
-            background-attachment: fixed; 
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
-            font-family: 'Tiro Devanagari Marathi', serif;
-            color: var(--text-color);
-            overflow-x: hidden;
-            padding-bottom: 50px;
-        }
+        /* LIGHT THEME (SUBTLE SHIFT) */
+        body.light-mode {
+            --color-bg-start: #e0eee0;      
+            --color-bg-end: #f4f7fa;        
+            --color-accent-soft: #2F80ED;   
+            --color-text-primary: #1e293b;  
+            --color-text-secondary: #64748b;
+            --liquid-tint: rgba(255, 255, 255, 0.8); 
+            --liquid-border: 1px solid rgba(0, 0, 0, 0.1);
+            --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --inner-shadow: inset 0 0 5px rgba(255, 255, 255, 0.5);
+        }
 
-        header {
-            text-align: center;
-            margin-top: 60px;
-            max-width: 900px; 
-            padding: 0 5%;
-        }
+        /* Parallax Background Adjustment */
+        #parallax-bg {
+            background: radial-gradient(circle at center, var(--color-bg-start) 0%, #203535 100%);
+        }
+        body.light-mode #parallax-bg { 
+            background: radial-gradient(circle at center, var(--color-bg-end) 0%, var(--color-bg-start) 100%); 
+        }
 
-        h1 {
-            font-size: clamp(2.5rem, 5vw, 3.8rem);
-            font-weight: 700;
-            color: var(--accent);
-            text-shadow: 0 0 15px rgba(179, 224, 255, 0.4);
-            margin-bottom: 15px;
-        }
-        
-        #sign-in-container {
-            margin-top: 30px;
-            padding: 20px 30px;
-            border-radius: 12px;
-            background: rgba(0, 0, 0, 0.6); 
-            border: var(--glass-border);
-            text-align: center;
-            box-shadow: 0 0 20px rgba(0,0,0,0.8);
-        }
+        /* Base Reset */
+        body {
+            background: linear-gradient(135deg, var(--color-bg-start) 0%, var(--color-bg-end) 100%);
+            min-height: 100vh;
+            color: var(--color-text-primary);
+            font-family: 'Inter', sans-serif;
+            padding: 0;
+            margin: 0;
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+            font-size: 16px;
+            perspective: 1px;
+            transform-style: preserve-3d;
+            transition: all var(--transition-speed); 
+        }
+        @media (prefers-reduced-motion: reduce) {
+            * { transition: none !important; animation: none !important; }
+        }
 
-        /* प्रतीक्षा संदेश (Waiting Message) */
-        #waiting-message {
-            padding: 20px;
-            color: #FFD700; 
-            border: 1px solid #FFD700;
-            border-radius: 8px;
-            margin-top: 20px;
-            background: rgba(0, 0, 0, 0.7);
-            display: none; 
-        }
-        
-        #user-info {
-            color: var(--accent);
-            margin-top: 15px;
-            font-size: 1.1rem;
-        }
-        
-        .subhasita-line {
-            opacity: 0.6; 
-            line-height: 1.6;
-            font-size: clamp(1rem, 2vw, 1.2rem);
-            margin: 5px 0;
-            text-shadow: 0 0 2px rgba(0, 0, 0, 0.5); 
-        }
+        #dashboard-content {
+            width: 100%; display: flex; flex-direction: column; align-items: center;
+            position: relative; z-index: 10; min-height: 100vh; 
+        }
 
-        /* ========================================================= */
-        /* 3. MAIN CONTENT LAYOUT (रिस्पॉन्सिव्ह ग्रिड) */
-        /* ========================================================= */
-        main {
-            width: 90%;
-            max-width: 900px; /* 3-Column Layoutसाठी रुंदी वाढवली */
-            margin-top: 50px;
-            display: grid;
-            gap: 15px; 
-            /* 100 panelsसाठी प्रति ओळ 3 पॅनल (किमान 220px) */
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); 
-            display: none; /* बाय डीफॉल्ट डॅशबोर्ड लपवलेला */
-        }
-        
-        main.signed-in {
-            display: grid; /* साइन-इन झाल्यावर डॅशबोर्ड दिसेल */
-        }
-        
-        .liquid-glass {
-            background: var(--glass-bg);
-            border: var(--glass-border);
-            backdrop-filter: blur(var(--blur));
-            -webkit-backdrop-filter: blur(var(--blur)); 
-            border-radius: 16px;
-            padding: 20px;
-            box-shadow: 0 0 25px rgba(0,0,0,0.8); 
-            transition: var(--transition-speed);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
+        /* ========================================================= */
+        /* 2. LIQUID GLASS & ANIMATIONS */
+        /* ========================================================= */
+        
+        /* Continuous Glow Keyframes */
+        @keyframes continuousGlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .liquid-glass {
+            transition: all var(--transition-speed); 
+            position: relative; z-index: 1; overflow: hidden; 
+        }
+        
+        /* Pseudo-element for the gradient border glow */
+        .liquid-glass::before {
+            content: ''; position: absolute; top: -2px; left: -2px; right: -2px; bottom: -2px;
+            background: linear-gradient(45deg, var(--glow-start-color), var(--glow-end-color), var(--glow-start-color));
+            background-size: 300% 300%; 
+            animation: continuousGlow 5s ease infinite alternate; 
+            z-index: -1; border-radius: 18px; 
+            opacity: 0.6; 
+            filter: blur(8px); 
+            transition: opacity 0.4s ease-out, filter 0.4s ease-out;
+        }
 
-        .liquid-glass:hover {
-            background: rgba(0, 0, 0, 0.70); 
-            box-shadow: 0 5px 30px rgba(0,0,0,0.9);
-            transform: translateY(-2px); 
-        }
+        /* Hover/Active/Focus state for the gradient border glow */
+        .liquid-glass:hover::before,
+        .liquid-glass:active::before, 
+        .liquid-glass:focus::before 
+        {
+            opacity: 1; 
+            filter: blur(12px); 
+        }
+        
+        /* Combined Card Hover/Active/Focus Effect (Lift + Gradient Shadow) */
+        .liquid-glass:hover, .liquid-glass:active, .liquid-glass:focus {
+            box-shadow: 
+                var(--card-shadow), 
+                0 0 25px rgba(47, 128, 237, 0.4), 
+                0 0 25px rgba(178, 255, 218, 0.4); 
+            transform: translateY(var(--lift-amount)) scale(1.02); 
+            z-index: 1000; 
+        }
 
-        h2 {
-            color: var(--accent);
-            margin-bottom: 5px;
-            font-size: 1.6rem;
-        }
+        /* 3. Link Hover Shake */
+        @keyframes shake {
+            0% { transform: scale(1.05) rotate(0deg); } 25% { transform: scale(1.05) rotate(1deg); }
+            50% { transform: scale(1.05) rotate(-1deg); } 75% { transform: scale(1.05) rotate(1deg); }
+            100% { transform: scale(1.05) rotate(0deg); }
+        }
+        .view-link:hover { 
+            background-color: var(--color-accent-soft); transform: scale(1.05);
+            animation: shake 0.3s ease-in-out 1; 
+        }
+        
+        /* 5. System Status Fade */
+        @keyframes subtleFade {
+            0% { opacity: 0.8; } 50% { opacity: 1; } 100% { opacity: 0.8; }
+        }
+        .status-animate { animation: subtleFade 2s infinite alternate; }
 
-        .tags {
-            font-size: 0.9rem;
-            color: var(--accent);
-            opacity: 0.7;
-            margin-bottom: 10px;
-        }
+        /* ========================================================= */
+        /* 3. LAYOUT & GRID (Clean List View) */
+        /* ========================================================= */
 
-        a {
-            display: inline-block;
-            align-self: flex-end; 
-            margin-top: 10px;
-            padding: 8px 16px;
-            border-radius: 12px;
-            border: var(--glass-border);
-            background: rgba(0,0,0,0.3); 
-            color: var(--text-color);
-            text-decoration: none;
-            font-weight: 500;
-            transition: var(--transition-speed);
-        }
+        .main-container { width: 95%; max-width: 1600px; padding: 20px 2.5% 0; margin: 0 auto; }
+        .iframe-grid { 
+            display: grid; 
+            grid-template-columns: 1fr; 
+            gap: 40px; 
+            padding-bottom: 60px; 
+            width: 100%;
+            padding-top: 0; 
+        }
 
-        a:hover {
-            background: rgba(0,0,0,0.5); 
-            box-shadow: 0 0 10px rgba(179, 224, 255, 0.3);
-        }
+        /* 6. 3D Project Title Hover */
+        @keyframes titleGlow {
+            0% { color: var(--color-accent-soft); text-shadow: none; }
+            50% { color: var(--color-text-primary); text-shadow: 0 0 5px var(--color-accent-soft); }
+            100% { color: var(--color-accent-soft); text-shadow: none; }
+        }
+        
+        /* MODIFIED: Project Title Size Increased */
+        .project-title { 
+            /* NEW SIZE: Larger font for prominence */
+            font-size: clamp(1.5rem, 3vw, 2rem); 
+            font-weight: 600; /* Slightly bolder */
+            grid-area: title; 
+            padding-bottom: 5px; margin-bottom: 10px; /* Increased margin */
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
+            transition: all 0.3s ease-out; 
+        }
+        .iframe-panel:hover .project-title,
+        .iframe-panel:active .project-title, 
+        .iframe-panel:focus .project-title 
+        { 
+            transform: translateZ(20px) translateY(-2px); 
+            animation: titleGlow 1s ease-in-out infinite alternate; 
+        }
 
-        footer {
-            margin-top: 50px; 
-            text-align: center;
-            font-size: 0.9rem;
-            opacity: 0.4; 
-            padding: 20px 0;
-            width: 100%;
-            text-shadow: 0 0 3px rgba(0, 0, 0, 1.0); 
-        }
-    </style>
+        /* MODIFIED: List View Grid Layout (Thumbnail Removed) */
+        .iframe-panel { 
+            min-height: 150px; 
+            padding: 20px; 
+            display: grid; 
+            /* Grid now uses only one column for content */
+            grid-template-columns: 1fr; 
+            /* Redefined areas: Title, Tags, Control (Thumb removed) */
+            grid-template-areas: 
+                "title"
+                "tags"
+                "control";
+            gap: 10px; /* Reduced gap since thumbnail is gone */
+            align-items: center; 
+            cursor: pointer; transform-style: preserve-3d; perspective: 800px; 
+            transition: all var(--transition-speed), opacity 0.6s; opacity: 0; position: relative;
+            transform: none; z-index: auto; margin-bottom: 0;
+            filter: none !important; 
+        }
+        
+        .iframe-panel.show { opacity: 1; animation: slideInUp 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; }
+        
+        /* HIDE THUMBNAIL CONTAINER */
+        .project-thumbnail-container { display: none !important; }
+        
+        .tags-list { grid-area: tags; font-size: 0.8rem; align-self: flex-start; margin-bottom: 5px; text-align: left; }
+        .view-control { grid-area: control; display: flex; justify-content: flex-end; align-items: flex-end; margin-bottom: 0; margin-top: auto; }
+
+
+        /* ========================================================= */
+        /* 4. HEADER/LOGO & ANIMATIONS */
+        /* ========================================================= */
+        
+        /* 2. Logo Pulse/Glow */
+        @keyframes pulseGlow {
+            0% { opacity: 0.9; transform: scale(1); } 50% { opacity: 1; transform: scale(1.02); text-shadow: 0 0 20px var(--color-accent-soft); }
+            100% { opacity: 0.9; transform: scale(1); }
+        }
+        
+        /* Custom Class for the Main Title */
+        .main-title {
+            font-size: clamp(2.5rem, 5vw, 4rem); 
+            font-weight: 800; 
+            color: var(--color-accent-soft); 
+            letter-spacing: 4px; 
+            margin-bottom: 10px;
+            text-shadow: 0 0 15px var(--color-accent-soft); 
+            animation: pulseGlow 4s ease-in-out infinite; 
+        }
+        
+        /* Headline for the subhasita */
+        .headline-subhasita { 
+            font-size: clamp(1rem, 2vw, 1.2rem); 
+            font-weight: 500; 
+            color: var(--color-text-primary); 
+            letter-spacing: 1px; 
+            max-width: 800px; 
+            line-height: 1.8;
+            margin: 5px auto; 
+        }
+
+        .dashboard-header { 
+            text-align: center; 
+            padding: 50px 0 60px; 
+            width: 100%; 
+            display: flex; 
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* ========================================================= */
+        /* 5. RESPONSIVE LAYOUT LOGIC */
+        /* ========================================================= */
+
+        /* --- Tablet/Desktop Breakpoint: DUAL Column Grid (769px and up) --- */
+        @media (min-width: 769px) {
+            .iframe-grid {
+                grid-template-columns: repeat(2, 1fr); 
+                gap: 50px; 
+                padding-top: 0; 
+            }
+            .iframe-panel {
+                /* Reset alignment for dual column view */
+                align-items: flex-start;
+            }
+        }
+
+        /* --- Mobile Breakpoint: Single Column (768px and down) --- */
+        @media (max-width: 768px) {
+            .iframe-grid {
+                gap: 40px; 
+                padding-top: 0; 
+            }
+            
+            /* Mobile Vertical List View Overrides */
+            .iframe-panel { 
+                grid-template-columns: 1fr; 
+                grid-template-areas: "title" "tags" "control"; /* No thumb area */
+                gap: 10px; 
+                min-height: auto; 
+                max-width: none; 
+                width: 100%;
+                margin-left: 0; 
+            }
+            .view-control { justify-content: center; }
+            .tags-list { text-align: center; }
+            .project-title { text-align: center; }
+            .main-title { font-size: 2rem; letter-spacing: 2px; } 
+        }
+        
+    </style>
 </head>
 <body>
-    <header>
-        <h1>ब्रह्मविद्या कल्पद्रुम</h1>
-        
-        <div id="sign-in-container">
-            <p style="margin: 0; opacity: 0.8;">कृपया डॅशबोर्ड पाहण्यासाठी Google ने लॉग इन करा:</p>
-            <div id="g_id_onload"
-                 data-client_id="199956925239-6rofbhltt1vgsq9hl8poig16pdj2e02a.apps.googleusercontent.com"
-                 data-context="signin"
-                 data-ux_mode="popup"
-                 data-callback="handleCredentialResponse"
-                 data-auto_prompt="false">
-            </div>
-            
-            <div class="g_id_signin"
-                 data-type="standard"
-                 data-shape="rectangular"
-                 data-theme="outline"
-                 data-text="signin_with"
-                 data-size="large"
-                 data-logo_alignment="left">
-            </div>
+    
+    <div id="parallax-bg"></div>
 
-            <div id="waiting-message">
-                ✅ **तुमची विनंती प्राप्त झाली आहे!** ॲडमिन कडून मंजुरी मिळताच डॅशबोर्ड आपोआप लोड होईल.
-                <br><small style="opacity: 0.7;">(कृपया पेज बंद करू नका)</small>
-            </div>
-            
-            <p id="user-info" style="display: none;">Welcome, <span id="display-name"></span></p>
-        </div>
-        
-        <div style="margin-top: 30px;">
-            <p class="subhasita-line">श्रीकृष्णरावो म्हणे उद्धवदेवा : हा ज्ञानरत्नाचा ठेवा</p>
-            <p class="subhasita-line">भलेतया हातीं नेदावा : अधिकारेंवीण ।।</p>
-            <p class="subhasita-line" style="margin-top: 20px;">हे ज्ञानसुधा गोमटी : जे पान करीति कर्णपुटीं :</p>
-            <p class="subhasita-line">तयां कहिं नाहिं कामाठी : जन्ममरणाची (श्रीउद्धवगीता)</p>
-        </div>
-    </header>
+    <div id="floating-elements">
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+    </div>
+    
+    <div id="dashboard-content">
+        <div class="main-container">
+            <header class="navbar">
+                <div class="system-status-panel">
+                    <span id="current-time" class="status-animate">00:00:00</span>
+                    <span id="fps-monitor" class="status-animate">FPS: --</span>
+                    
+                    <div id="theme-toggle" class="theme-toggle" title="थीम बदला"></div>
+                </div>
+            </header>
 
-    <main id="main-content">
-        <div class="liquid-glass">
-            <div>
-                <h2>१. सुमनमाला</h2>
-                <div class="tags">काव्य, ग्रंथ</div>
-            </div>
-            <a href="https://rohanborsa6600-tech.github.io/Sumanmala1/#section-14">पूर्ण दृश्य पाहा</a>
-        </div>
-        
-        <div class="liquid-glass">
-            <div>
-                <h2>२. सूत्रपाठ</h2>
-                <div class="tags">अभ्यास, पाठ</div>
-            </div>
-            <a href="https://rohanborsa6600-tech.github.io/Sutrapath-/#auto-section-23">पूर्ण दृश्य पाहा</a>
-        </div>
-        
-        <div class="liquid-glass">
-            <div>
-                <h2>३. गीतापाठ</h2>
-                <div class="tags">ग्रंथ, अध्यात्म</div>
-            </div>
-            <a href="https://rohanborsa6600-tech.github.io/Geeta-/index.html">पूर्ण दृश्य पाहा</a>
-        </div>
-        
-        <div class="liquid-glass">
-            <div>
-                <h2>४. जीवनसूत्र</h2>
-                <div class="tags">विविध, संकलन</div>
-            </div>
-            <a href="#">पूर्ण दृश्य पाहा</a>
-        </div>
-        
-        <div class="liquid-glass">
-            <div>
-                <h2>५. संतवाणी</h2>
-                <div class="tags">अध्यात्म, साहित्य</div>
-            </div>
-            <a href="#">पूर्ण दृश्य पाहा</a>
-        </div>
+            <div class="dashboard-header">
+                <div class="main-title">ब्रह्मविद्या कल्पद्रुम</div> 
+                
+                <div style="margin-top: 30px;">
+                    <p class="headline-subhasita">श्रीकृष्णरावो म्हणे उद्धवदेवा : हा ज्ञानरत्नाचा ठेवा</p>
+                    <p class="headline-subhasita">भलेतया हातीं नेदावा : अधिकारेंवीण ।।</p>
+                    <p class="headline-subhasita" style="margin-top: 20px;">हे ज्ञानसुधा गोमटी : जे पान करीति कर्णपुटीं :</p>
+                    <p class="headline-subhasita">तयां कहिं नाहिं कामाठी : जन्ममरणाची (श्रीउद्धवगीता)</p>
+                </div>
+            </div>
 
-        <div class="liquid-glass">
-            <div>
-                <h2>६. स्थळपोथी</h2>
-                <div class="tags">इतिहास, स्थळ</div>
-            </div>
-            <a href="https://rohanborsa6600-tech.github.io/Adx/">पूर्ण दृश्य पाहा</a>
-        </div>
-        </main>
+            <main class="iframe-grid" id="iframe-grid">
+                
+                <div class="iframe-panel liquid-glass" tabindex="0" data-category="ग्रंथ, काव्य">
+                    <h2 class="project-title">सुमनमाला</h2>
+                    <div class="tags-list">काव्य</div>
+                    <div class="view-control">
+                        <a class="view-link ripple-btn" 
+                                href="https://rohanborsa6600-tech.github.io/Sumanmala1/#section-14"
+                                onclick="playClickSound()">VIEW</a>
+                    </div>
+                </div>
 
-    <footer>
-        श्री देवदत्त आश्रम © सर्व हक्क राखीव
-    </footer>
-    
-    <script>
-        // 💡 **तुमची Firebase क्रेडेंशियल्स इथे टाका**
-        const firebaseConfig = {
-            apiKey: "AIzaSyCmqn4q1YFaaSRSbwgGOxxIaPQzbPACFXI",
-            authDomain: "adx2122-e0488.firebaseapp.com",
-            projectId: "adx2122-e0488",
-            storageBucket: "adx2122-e0488.firebasestorage.app",
-            messagingSenderId: "199956925239",
-            appId: "1:199956925239:web:a5e0d33199f1e992fae8b2"
-        };
+                <div class="iframe-panel liquid-glass" tabindex="0" data-category="अभ्यास, पाठ">
+                    <h2 class="project-title">सूत्रपाठ</h2>
+                    <div class="tags-list">पाठ</div>
+                    <div class="view-control">
+                        <a class="view-link ripple-btn" 
+                                href="https://rohanborsa6600-tech.github.io/Sutrapath-/#auto-section-23"
+                                onclick="playClickSound()">VIEW</a>
+                    </div>
+                </div>
 
-        // Firebase ॲप सुरू करा
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const db = firebase.firestore();
-        const userCollection = db.collection("logged_users"); 
+                <div class="iframe-panel liquid-glass" tabindex="0" data-category="ग्रंथ, अध्यात्म">
+                    <h2 class="project-title">गीतापाठ</h2>
+                    <div class="tags-list">पाठ</div>
+                    <div class="view-control">
+                        <a class="view-link ripple-btn" 
+                                href="https://rohanborsa6600-tech.github.io/Geeta-/index.html"
+                                onclick="playClickSound()">VIEW</a>
+                    </div>
+                </div>
 
-        // ऑथेंटिकेशन झाल्यावर कॉल होणारे मुख्य फंक्शन
-        function handleCredentialResponse(response) {
-            const googleCredential = firebase.auth.GoogleAuthProvider.credential(response.credential);
+                <div class="iframe-panel liquid-glass" tabindex="0" data-category="इतिहास, स्थळ">
+                    <h2 class="project-title">स्थळपोथी</h2>
+                    <div class="tags-list">स्थळ</div>
+                    <div class="view-control">
+                        <a class="view-link ripple-btn" 
+                                href="https://rohanborsa6600-tech.github.io/Adx/"
+                                onclick="playClickSound()">VIEW</a>
+                    </div>
+                </div>
+            </main>
+        </div>
 
-            auth.signInWithCredential(googleCredential)
-                .then((result) => {
-                    checkUserApproval(result.user);
-                })
-               .catch((error) => {
-    console.error("Firebase Sign-In Failed:", error);
+        <footer class="footer">
+            <p>श्री देवदत्त आश्रम,जाधववाडी (ADX) © सर्व हक्क राखीव. </p>
+        </footer>
+    </div>
 
-    // जुनी ओळ कमेंट करा:
-    // alert("लॉग इन अयशस्वी झाले. कृपया पुन्हा प्रयत्न करा.");
+    <script>
+        const iframeGrid = document.getElementById('iframe-grid');
+        const panels = document.querySelectorAll('.iframe-panel');
+        const bg = document.getElementById('parallax-bg');
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body;
+        let audioContext = null;
 
-    // 💡 खरा एरर दाखवण्यासाठी ही नवीन ओळ टाका:
-    alert("Firebase त्रुटी: " + error.message); 
-});
-        }
 
-        // युजरची स्थिती तपासणारे आणि डेटाबेसमध्ये नोंद करणारे फंक्शन
-        function checkUserApproval(user) {
-            const userDocRef = userCollection.doc(user.email);
-            const userName = user.displayName;
+        // --- A. AURAL FEEDBACK (Micro-sound) ---
+        function playClickSound() {
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+            try {
+                if (!audioContext) {
+                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                oscillator.type = 'sine';
+                oscillator.frequency.setValueAtTime(100, audioContext.currentTime); 
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                oscillator.start();
+                gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.15); 
+                oscillator.stop(audioContext.currentTime + 0.15);
+            } catch (e) { /* Ignored */ }
+        }
+        window.playClickSound = playClickSound;
 
-            userDocRef.get().then((doc) => {
-                if (doc.exists) {
-                    const status = doc.data().status;
-                    if (status === 'approved') {
-                        displayDashboard(userName);
-                    } else {
-                        // ॲडमिनची मंजुरी बाकी आहे
-                        displayWaiting(userName, userDocRef);
-                    }
-                } else {
-                    // युजर नवीन आहे, 'pending' म्हणून नोंद करा
-                    logNewUser(user, userDocRef);
-                    displayWaiting(userName, userDocRef);
-                }
-            }).catch(error => {
-                console.error("Error checking document:", error);
-                alert("डेटा तपासताना त्रुटी आली.");
-            });
-        }
-        
-        // नवीन युजरची 'pending' स्थितीमध्ये नोंद करणारे फंक्शन
-        function logNewUser(user, userDocRef) {
-            const deviceName = navigator.userAgent; 
-            const platform = navigator.platform;
+        // --- B. THEME TOGGLE (Light/Dark Mode) ---
+        themeToggle.addEventListener('click', () => {
+            playClickSound();
+            body.classList.toggle('light-mode');
+            const isLight = body.classList.contains('light-mode');
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+        });
 
-            userDocRef.set({
-                name: user.displayName,
-                email: user.email,
-                first_login: firebase.firestore.FieldValue.serverTimestamp(),
-                last_login: firebase.firestore.FieldValue.serverTimestamp(),
-                status: 'pending', // 🛑 ॲडमिन अप्रूव्हलसाठी ही महत्त्वाची ओळ आहे
-                device_info: {
-                    userAgent: deviceName,
-                    platform: platform,
-                }
-            });
-        }
+        // --- C. PWA Service Worker Registration ---
+        function registerServiceWorker() {
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('/service-worker.js').then(function(registration) {
+                    console.log('Service Worker registration successful with scope: ', registration.scope);
+                }).catch(function(err) {
+                    console.log('Service Worker registration failed: ', err);
+                });
+            }
+        }
+        
+        // --- D. SYSTEM STATUS PANEL (Clock & FPS) ---
+        function updateTime() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('en-US', { hour12: false });
+            document.getElementById('current-time').textContent = timeString;
+        }
 
-        // प्रतीक्षा संदेश दाखवणारे आणि Real-time ऐकणारे (Listener) फंक्शन
-        function displayWaiting(userName, userDocRef) {
-            document.getElementById('sign-in-container').style.display = 'none';
-            document.getElementById('waiting-message').style.display = 'block';
-            
-            document.getElementById('display-name').textContent = userName;
-            document.getElementById('user-info').style.display = 'block';
+        let lastTime = 0;
+        let frameCount = 0;
+        const fpsElement = document.getElementById('fps-monitor');
 
-            // ॲडमिन अप्रूव्हलसाठी Real-time Listener सेट करा
-            // ॲडमिनने स्टेटस बदलल्यास, डॅशबोर्ड आपोआप लोड होईल
-            userDocRef.onSnapshot((doc) => {
-                if (doc.exists && doc.data().status === 'approved') {
-                    document.getElementById('waiting-message').style.display = 'none';
-                    displayDashboard(userName);
-                }
-            });
-        }
+        function updateFPS(timestamp) {
+            frameCount++;
+            const elapsed = timestamp - lastTime;
+            if (elapsed >= 1000) { 
+                const fps = Math.round((frameCount * 1000) / elapsed);
+                fpsElement.textContent = `FPS: ${fps}`;
+                frameCount = 0;
+                lastTime = timestamp;
+            }
+            requestAnimationFrame(updateFPS);
+        }
+        
+        // --- E. INITIALIZATION & INTERACTION LOGIC ---
+        document.addEventListener('DOMContentLoaded', () => {
+            if (localStorage.getItem('theme') === 'light') {
+                body.classList.add('light-mode');
+            }
+            
+            setInterval(updateTime, 1000);
+            requestAnimationFrame(updateFPS);
+            registerServiceWorker(); 
+            
+            panels.forEach((panel, index) => {
+                // Entry Animation Trigger (Staggered)
+                setTimeout(() => {
+                    panel.classList.add('show');
+                }, 100 * index); 
 
-        // डॅशबोर्ड दृश्यमान (Visible) करणारे फंक्शन
-        function displayDashboard(userName) {
-            document.getElementById('sign-in-container').style.display = 'none';
-            document.getElementById('waiting-message').style.display = 'none';
-            document.getElementById('main-content').classList.add('signed-in');
-            document.getElementById('display-name').textContent = userName;
-            document.getElementById('user-info').style.display = 'block';
-        }
+                // Adaptive Grid Logic
+                panel.addEventListener('mouseenter', () => {
+                    iframeGrid.classList.add('dim-active');
+                });
+                panel.addEventListener('mouseleave', () => {
+                    iframeGrid.classList.remove('dim-active');
+                });
+                
+                // Click to navigate
+                panel.addEventListener('click', (e) => {
+                    if (!e.target.closest('.view-link')) {
+                        panel.querySelector('.view-link').click();
+                    }
+                });
+            });
+        });
+        
+        // --- F. PARALLAX SCROLL LOGIC ---
+        window.addEventListener('scroll', () => {
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-        // पेज लोड झाल्यावर तपासणी: युजर आधीच लॉग इन आहे का?
-        auth.onAuthStateChanged(user => {
-            if (user) {
-                checkUserApproval(user);
-            }
-        });
+            const scrollPos = window.pageYOffset;
+            bg.style.transform = `translateY(${scrollPos * 0.5}px) translateZ(-1px) scale(2)`;
+        });
 
-        window.handleCredentialResponse = handleCredentialResponse;
-    </script>
+    </script>
 </body>
 </html>
