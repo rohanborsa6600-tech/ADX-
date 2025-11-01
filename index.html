@@ -45,6 +45,8 @@
       text-align: center;
       margin-top: 40px;
       backdrop-filter: blur(4px);
+      width: 90%;
+      max-width: 800px;
     }
 
     .main-title {
@@ -59,19 +61,9 @@
       font-size: 1.2rem;
     }
 
-    /* Search + Filter */
-    .search-filter-bar {
-      margin-top: 25px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      justify-content: center;
-      width: 90%;
-      max-width: 600px;
-    }
-
+    /* Search */
     .search-container {
-      flex: 1 1 250px;
+      margin-top: 25px;
       display: flex;
       align-items: center;
       background: rgba(255,255,255,0.1);
@@ -79,6 +71,11 @@
       border-radius: 25px;
       padding: 6px 16px;
       backdrop-filter: blur(8px);
+      max-width: 600px;
+      width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+      box-sizing: border-box; /* Added for better padding behavior */
     }
 
     .search-container input {
@@ -88,29 +85,20 @@
       outline: none;
       font-size: 1rem;
       color: var(--text-color);
+      font-family: 'Tiro Devanagari Marathi', serif;
     }
 
     .search-container input::placeholder {
       color: rgba(255,255,255,0.6);
     }
-
-    .filter-btn {
-      padding: 8px 18px;
-      border: 1px solid var(--glow-color);
-      background: rgba(255, 255, 255, 0.1);
-      color: var(--text-color);
-      border-radius: 20px;
-      cursor: pointer;
-      backdrop-filter: blur(8px);
-      transition: 0.3s;
-      font-size: 1rem;
+    
+    body.light .search-container input {
+        color: #111;
+    }
+    body.light .search-container input::placeholder {
+        color: rgba(0,0,0,0.6);
     }
 
-    .filter-btn:hover, .filter-btn.active {
-      background: var(--glow-color);
-      color: #000;
-      box-shadow: 0 0 18px var(--glow-color);
-    }
 
     /* Grid */
     .iframe-grid {
@@ -150,12 +138,15 @@
       margin-bottom: 10px;
       color: #c7f9ff;
     }
+    body.light .project-title { color: #005f73; }
 
     .tags-list {
       font-size: 1rem;
       color: #ffecb3;
       margin-bottom: 18px;
     }
+    body.light .tags-list { color: #5c3a00; }
+
 
     .view-link {
       display: inline-block;
@@ -176,6 +167,7 @@
       background: rgba(0, 255, 255, 0.35);
       box-shadow: 0 0 20px var(--glow-color);
     }
+    body.light .view-link { color: #000; }
 
     /* Theme toggle */
     .theme-toggle {
@@ -196,7 +188,127 @@
       box-shadow: 0 0 10px var(--glow-color);
       font-size: 1.2rem;
       transition: 0.3s;
+      z-index: 1002;
     }
+
+    /* =========== NEW FILTER BUTTON =========== */
+    #filter-toggle-btn {
+      position: fixed;
+      top: 80px; /* थीम बटणाच्या खाली */
+      right: 25px; /* थीम बटणाशी संरेखित */
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid var(--glow-color);
+      color: var(--text-color);
+      border-radius: 50%;
+      width: 42px;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 0 10px var(--glow-color);
+      font-size: 1.2rem;
+      transition: 0.3s;
+      z-index: 1002;
+    }
+    #filter-toggle-btn svg {
+      width: 20px;
+      height: 20px;
+      stroke: currentColor;
+    }
+
+    /* =========== NEW POPUP MENU STYLES =========== */
+    .popup-menu {
+      position: fixed;
+      top: 130px; /* फिल्टर बटणाच्या खाली */
+      right: 25px; /* फिल्टर बटणाशी संरेखित */
+      width: 280px;
+      background: rgba(40, 40, 40, 0.7); /* गडद पार्श्वभूमी */
+      backdrop-filter: blur(15px) saturate(180%);
+      -webkit-backdrop-filter: blur(15px) saturate(180%);
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+      color: #ffffff; /* पांढरा टेक्स्ट */
+      z-index: 1001;
+      overflow: hidden;
+      transform: scale(1.05);
+      opacity: 0;
+      transition: transform 0.2s ease-out, opacity 0.2s ease-out;
+    }
+    
+    body.light .popup-menu {
+        background: rgba(255, 255, 255, 0.7);
+        color: #111;
+        border-color: rgba(0, 0, 0, 0.1);
+    }
+
+    .popup-menu.hidden {
+      transform: scale(0.95);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .popup-menu:not(.hidden) {
+      transform: scale(1);
+      opacity: 1;
+    }
+
+    .popup-menu ul {
+      list-style: none;
+      margin: 0;
+      padding: 8px;
+    }
+
+    .popup-menu li {
+      padding: 14px 16px;
+      font-size: 17px;
+      font-weight: 500;
+      border-radius: 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: background-color 0.2s ease;
+    }
+
+    .popup-menu li:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+    body.light .popup-menu li:hover {
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+
+    /* अक्षर सूचीसाठी स्टायलिंग */
+    #alphabet-popup {
+      top: 180px; /* अंदाजे जागा */
+      right: 25px;
+      padding: 16px;
+      width: 250px; /* लहान रुंदी */
+    }
+
+    .alphabet-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr); /* एका रांगेत ४ अक्षरे */
+      gap: 8px;
+      text-align: center;
+    }
+
+    .alphabet-grid span {
+      padding: 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    .alphabet-grid span:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+    body.light .alphabet-grid span:hover {
+      background-color: rgba(0, 0, 0, 0.2);
+    }
+    /* =========== END NEW STYLES =========== */
 
     .footer {
       text-align: center;
@@ -205,16 +317,39 @@
       color: #ccc;
       backdrop-filter: blur(6px);
     }
+    body.light .footer { color: #333; }
+
 
     @media (max-width: 600px) {
       .main-title { font-size: 2rem; }
       .iframe-panel { padding: 16px; }
+      /* पॉपअप मेन्यू मोबाईलवर मध्यभागी आणा */
+      .popup-menu {
+          left: 50%;
+          transform: translateX(-50%);
+          right: auto;
+          width: 90%;
+          max-width: 300px;
+      }
+      #alphabet-popup {
+          left: 50%;
+          transform: translateX(-50%);
+          right: auto;
+          width: 90%;
+          max-width: 280px;
+      }
     }
   </style>
 </head>
 
 <body>
   <div class="theme-toggle" id="themeToggle" title="Switch Theme">🌗</div>
+
+  <button id="filter-toggle-btn" title="Filter Menu">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+      </svg>
+  </button>
 
   <div class="dashboard-header">
     <div class="main-title">ब्रह्मविद्या कल्पद्रुम</div>
@@ -225,19 +360,46 @@
       <p class="headline-subhasita">तयां कहिं नाहिं कामाठी : जन्ममरणाची (श्रीउद्धवगीता)</p>
     </div>
 
-    <!-- Search + Filter -->
-    <div class="search-filter-bar">
-      <div class="search-container">
-        <input type="text" id="searchBar" placeholder="🔍 शोधा – ग्रंथ, काव्य, स्थळ, पाठ...">
-      </div>
-      <button class="filter-btn active" data-filter="all">सर्व</button>
-      <button class="filter-btn" data-filter="काव्य">काव्य</button>
-      <button class="filter-btn" data-filter="पाठ">पाठ</button>
-      <button class="filter-btn" data-filter="स्थळ">स्थळ</button>
-      <button class="filter-btn" data-filter="भाष्य">भाष्य</button>
-      <button class="filter-btn" data-filter="इतर">इतर</button>
+    <div class="search-container">
+      <input type="text" id="searchBar" placeholder="🔍 शोधा – ग्रंथ, काव्य, स्थळ, पाठ...">
     </div>
   </div>
+
+  <div id="category-menu" class="popup-menu hidden">
+      <ul>
+          <li id="show-alphabet-btn">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M17 11h-1.5a2.5 2.5 0 1 0 0 5H17M7 16v-5H6M10 16v-5H9M14 7l-5 9"/>
+                  <path d="M18 7l-5 9"/>
+              </svg>
+              अक्षरानुक्रमे (Alphabetical)
+          </li>
+          <li class="category-item" data-category="all">सर्व पहा (Show All)</li>
+          <li class="category-item" data-category="काव्य">काव्य</li>
+          <li class="category-item" data-category="पाठ">पाठ</li>
+          <li class="category-item" data-category="स्थळ">स्थळ</li>
+          <li class="category-item" data-category="भाष्य">भाष्य</li>
+          <li class="category-item" data-category="इतर">इतर</li>
+      </ul>
+  </div>
+
+  <div id="alphabet-popup" class="popup-menu hidden">
+      <div class="alphabet-grid">
+          <span>अ</span><span>आ</span><span>इ</span><span>ई</span>
+          <span>उ</span><span>ऊ</span><span>ए</span><span>ऐ</span>
+          <span>ओ</span><span>औ</span><span>अं</span><span>अः</span>
+          <span>क</span><span>ख</span><span>ग</span><span>घ</span>
+          <span>च</span><span>छ</span><span>ज</span><span>झ</span>
+          <span>ट</span><span>ठ</span><span>ड</span><span>ढ</span>
+          <span>त</span><span>थ</span><span>द</span><span>ध</span>
+          <span>न</span><span>प</span><span>फ</span><span>ब</span>
+          <span>भ</span><span>म</span><span>य</span><span>र</span>
+          <span>ल</span><span>व</span><span>श</span><span>ष</span>
+          <span>स</span><span>ह</span><span>ळ</span><span>क्ष</span>
+          <span>ज्ञ</span>
+      </div>
+  </div>
+
 
   <main class="iframe-grid" id="iframe-grid">
     <div class="iframe-panel" data-category="काव्य">
@@ -282,43 +444,111 @@
   </footer>
 
   <script>
+    // --- Setup ---
     const clickSound = new Audio("https://cdn.pixabay.com/download/audio/2022/03/15/audio_4f8b0c9b2f.mp3?filename=ui-click-173479.mp3");
     function playClickSound() { clickSound.currentTime = 0; clickSound.play(); }
 
-    // Theme toggle
+    // --- Theme Toggle ---
     document.getElementById("themeToggle").addEventListener("click", () => {
       document.body.classList.toggle("light");
       playClickSound();
     });
 
-    // Filter system
-    const buttons = document.querySelectorAll('.filter-btn');
+    // --- Get All Panels ---
     const panels = document.querySelectorAll('.iframe-panel');
+    
+    // --- State Variables for Filtering ---
+    let currentCategory = 'all';
+    let currentSearchTerm = '';
+    let currentLetter = '';
 
-    buttons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        playClickSound();
-        buttons.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        const filter = btn.dataset.filter;
+    // --- Main Update Function ---
+    // ही फंक्शन सर्व फिल्टर्स (सर्च, कॅटेगरी, अक्षर) एकत्र तपासेल
+    function updateGrid() {
         panels.forEach(panel => {
-          if (filter === 'all' || panel.dataset.category === filter) {
-            panel.style.display = 'block';
-          } else {
-            panel.style.display = 'none';
-          }
+            const panelText = panel.textContent.toLowerCase();
+            const panelTitle = panel.querySelector('.project-title').textContent.toLowerCase();
+            const panelCategory = panel.dataset.category;
+
+            // 1. Check Category
+            const categoryMatch = (currentCategory === 'all' || panelCategory === currentCategory);
+            
+            // 2. Check Search Term
+            const searchMatch = (currentSearchTerm === '' || panelText.includes(currentSearchTerm));
+
+            // 3. Check Alphabetical
+            const letterMatch = (currentLetter === '' || panelTitle.startsWith(currentLetter));
+
+            // Show panel only if all conditions match
+            if (categoryMatch && searchMatch && letterMatch) {
+                panel.style.display = 'block';
+            } else {
+                panel.style.display = 'none';
+            }
         });
-      });
+    }
+
+    // --- 1. New Filter Menu Logic ---
+    const filterBtn = document.getElementById('filter-toggle-btn');
+    const categoryMenu = document.getElementById('category-menu');
+    const alphabetPopup = document.getElementById('alphabet-popup');
+    const showAlphabetBtn = document.getElementById('show-alphabet-btn');
+
+    filterBtn.addEventListener('click', () => {
+        playClickSound();
+        categoryMenu.classList.toggle('hidden');
+        if (categoryMenu.classList.contains('hidden')) {
+            alphabetPopup.classList.add('hidden');
+        }
     });
 
-    // Search
-    document.getElementById("searchBar").addEventListener("input", e => {
-      const term = e.target.value.toLowerCase();
-      panels.forEach(panel => {
-        const text = panel.textContent.toLowerCase();
-        panel.style.display = text.includes(term) ? "block" : "none";
-      });
+    showAlphabetBtn.addEventListener('click', (event) => {
+        event.stopPropagation();
+        playClickSound();
+        alphabetPopup.classList.toggle('hidden');
     });
+
+    // Filter by Category
+    document.querySelectorAll('.category-item').forEach(item => {
+        item.addEventListener('click', () => {
+            playClickSound();
+            currentCategory = item.getAttribute('data-category');
+            currentLetter = ''; // Reset letter filter
+            updateGrid(); // Call main update function
+            
+            categoryMenu.classList.add('hidden');
+            alphabetPopup.classList.add('hidden');
+        });
+    });
+
+    // Filter by Letter
+    document.querySelectorAll('.alphabet-grid span').forEach(letter => {
+        letter.addEventListener('click', () => {
+            playClickSound();
+            currentLetter = letter.textContent.toLowerCase();
+            currentCategory = 'all'; // Reset category filter
+            updateGrid(); // Call main update function
+
+            categoryMenu.classList.add('hidden');
+            alphabetPopup.classList.add('hidden');
+        });
+    });
+
+    // --- 2. Search Bar Logic (from user's code) ---
+    document.getElementById("searchBar").addEventListener("input", e => {
+        currentSearchTerm = e.target.value.toLowerCase();
+        // जेव्हा युजर शोधतो, तेव्हा आपण इतर फिल्टर्स चालू ठेवू
+        updateGrid(); // Call main update function
+    });
+
+    // --- 3. Close Popups on Outside Click ---
+    document.addEventListener('click', (event) => {
+        if (!categoryMenu.contains(event.target) && !filterBtn.contains(event.target) && !alphabetPopup.contains(event.target) && !event.target.closest('#filter-toggle-btn')) {
+            categoryMenu.classList.add('hidden');
+            alphabetPopup.classList.add('hidden');
+        }
+    });
+
   </script>
 </body>
 </html>
